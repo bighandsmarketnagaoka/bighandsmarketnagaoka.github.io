@@ -1311,7 +1311,17 @@ function send(text, shortcut) {
   }
   window.google = { script: { run: runner(null, null) } };
 
+  // 読み込み中の表示（Apps Script が起きるまで数秒かかることがある）
+  var boot = document.createElement("div");
+  boot.id = "boot";
+  boot.setAttribute("role", "status");
+  boot.style.cssText = "position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#fff;color:#5b564e;font:14px/1.6 'Noto Sans JP','Hiragino Sans',sans-serif;z-index:99;letter-spacing:.08em";
+  var lang = (navigator.language || "ja").slice(0, 2);
+  boot.innerHTML = '<div style="font-family:Shippori Mincho,serif;font-size:17px;letter-spacing:.18em;color:#1e1c19">BIG HANDS MARKET</div><div>' + (lang === "ja" ? "読み込み中…" : "Loading…") + "</div>";
+  document.body.appendChild(boot);
+
   function start(cfg) {
+    if (boot.parentNode) boot.parentNode.removeChild(boot);
     document.getElementById("cfg").textContent = JSON.stringify(cfg || {});
     var s = document.createElement("script");
     s.text = document.getElementById("app").textContent;
