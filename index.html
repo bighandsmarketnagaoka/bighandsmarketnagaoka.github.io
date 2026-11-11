@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIG HANDS MARKET | Concierge</title>
+<base target="_top">
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Shippori+Mincho:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffffff; --paper-deep: #f3f1ed; --ink: #1e1c19; --ink-soft: #5b564e;
+    --line: #e3ded5; --accent: #9a5b34; --user: #efebe4;
+    --serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-text-size-adjust: 100%; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  .shell { max-width: 560px; margin: 0 auto; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+  .head { position: relative; display: flex; justify-content: center; text-align: center; padding: 22px 20px 14px; background: var(--paper); border-bottom: 1px solid var(--line); }
+  .head > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .head .lang { position: absolute; top: 14px; right: 16px; }
+  .catch { display: block; max-height: 160px; max-width: min(480px, 88vw); width: auto; }
+  @media (max-width: 600px) {
+    .logo { max-height: 130px; }
+    .catch { max-height: 72px; }
+    .head { padding: 16px 16px 10px; }
+  }
+  .brand { margin: 0; font-family: var(--serif); font-size: 17px; letter-spacing: .18em; }
+  .tagline { margin: 2px 0 0; font-size: 11px; letter-spacing: .08em; color: var(--ink-soft); }
+  .lang { border: 1px solid var(--line); background: transparent; border-radius: 2px; padding: 4px 6px; font-size: 13px; }
+  .log { flex: 1; padding: 24px 20px 12px; display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; flex-direction: column; gap: 10px; }
+  .row.user { align-items: flex-end; }
+  .bubble { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .bubble.welcome { font-family: var(--serif); font-size: 17px; line-height: 1.9; padding-bottom: 6px; }
+  .bubble.user { max-width: 85%; background: var(--user); padding: 9px 14px; border-radius: 14px 14px 2px 14px; }
+  .thinking { color: var(--ink-soft); font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--ink); background: transparent; border-radius: 999px; padding: 7px 16px; font-size: 14px; cursor: pointer; }
+  .chip:hover:not(:disabled) { background: var(--paper-deep); }
+  .chip:disabled { opacity: .4; cursor: default; }
+  .datepick { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .datepick input { border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 6px 10px; }
+  .receipt { align-self: stretch; border-top: 2px solid var(--accent); background: #fbf9f5; padding: 14px 16px; }
+  .receipt-label { margin: 0; font-size: 12px; letter-spacing: .1em; color: var(--ink-soft); }
+  .receipt-id { margin: 2px 0 6px; font-family: var(--serif); font-size: 24px; letter-spacing: .08em; color: var(--accent); }
+  .receipt-note { margin: 0; font-size: 14px; }
+  .link { align-self: flex-start; background: none; border: none; padding: 0; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; color: var(--ink-soft); cursor: pointer; }
+  .foot { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+  .composer { display: flex; gap: 8px; align-items: flex-end; }
+  .composer textarea { flex: 1; resize: none; border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 9px 16px; font-size: 16px; line-height: 1.5; max-height: 140px; }
+  .composer textarea:focus { outline: none; border-color: var(--ink-soft); }
+  .send { border: none; background: var(--accent); color: #fff; border-radius: 20px; padding: 9px 18px; cursor: pointer; }
+  .send:disabled { opacity: .4; cursor: default; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .privacy-link { background: none; border: none; padding: 6px 0 0; font-size: 12px; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .privacy { margin: 4px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+  .end { scroll-margin-bottom: 140px; }
+  [hidden] { display: none !important; }
+  .shops { display: grid; gap: 10px; }
+  .shops-title { margin: 6px 0 0; font-size: 12px; letter-spacing: .14em; color: var(--ink-soft); }
+  .shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .shop { text-align: left; border: 1px solid var(--line); background: #fbf9f5; border-radius: 10px; padding: 0; overflow: hidden; cursor: pointer; display: grid; }
+  .shop:hover { border-color: var(--ink-soft); }
+  .shop img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: var(--paper-deep); }
+  .shop.has-img { grid-template-columns: 52px minmax(0, 1fr); column-gap: 10px; align-items: center; padding: 8px; }
+  .shop.has-img img { width: 52px; height: 52px; aspect-ratio: auto; object-fit: contain; background: #fff; border-radius: 6px; grid-row: span 2; }
+  .shop.has-img span { padding: 0; align-self: end; }
+  .shop.has-img small { padding: 0; align-self: start; }
+  .shop span { display: block; padding: 8px 10px 0; font-family: var(--serif); font-size: 15px; line-height: 1.45; }
+  .shop small { display: block; padding: 2px 10px 10px; font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+  .tabs { position: sticky; top: 0; z-index: 5; display: flex; gap: 6px; overflow-x: auto; padding: 10px 20px; background: var(--paper); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; border: 1px solid transparent; background: transparent; border-radius: 999px; padding: 5px 14px; font-size: 13px; color: var(--ink-soft); cursor: pointer; white-space: nowrap; }
+  .tab:hover { color: var(--ink); }
+  .tab.on { border-color: var(--ink); color: var(--ink); }
+  .panel { flex: 1; padding: 0 20px 24px; display: grid; gap: 12px; align-content: start; }
+  .panel .hero { margin: 0 -20px 4px; background: #fff; }
+  .panel .hero img { object-fit: contain; padding: 12px; }
+  .panel-name { margin: 12px 0 0; font-family: var(--serif); font-weight: 500; font-size: 24px; line-height: 1.4; }
+  .panel-meta { margin: 0; font-size: 12px; letter-spacing: .06em; color: var(--ink-soft); }
+  .panel-desc { margin: 0; line-height: 1.85; }
+  .panel dl { margin: 4px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .panel dt { color: var(--ink-soft); font-size: 12px; padding-top: 2px; }
+  .panel dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  .panel .store-links { margin-top: 4px; }
+  .promo { align-self: stretch; border: 2px solid var(--accent); border-radius: 12px; background: #fbf5ef; padding: 12px 16px; display: grid; gap: 4px; }
+  .promo-title { margin: 0; font-weight: 600; font-size: 16px; }
+  .promo-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .ask { justify-self: start; margin-top: 6px; border: none; background: var(--accent); color: #fff; border-radius: 20px; padding: 9px 20px; cursor: pointer; }
+  .logo { display: block; max-height: 260px; max-width: min(300px, 70vw); width: auto; }
+  .hero { margin: 0 -20px; aspect-ratio: 16 / 9; max-width: calc(100% + 40px); overflow: hidden; background: var(--paper-deep); }
+  .hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .stores { display: grid; gap: 12px; align-self: stretch; }
+  .store { display: grid; grid-template-columns: 96px 1fr; gap: 12px; border: 1px solid var(--line); background: #fbf9f5; border-radius: 10px; overflow: hidden; }
+  .store.noimg { grid-template-columns: 1fr; }
+  .store img { width: 96px; height: 100%; min-height: 96px; object-fit: contain; display: block; background: #fff; padding: 6px; }
+  .store-body { padding: 10px 14px 12px 0; display: grid; gap: 4px; min-width: 0; }
+  .store.noimg .store-body { padding-left: 14px; }
+  .store-name { margin: 0; font-family: var(--serif); font-size: 16px; line-height: 1.5; }
+  .store-meta { margin: 0; font-size: 12px; color: var(--ink-soft); letter-spacing: .04em; }
+  .store-desc { margin: 0; font-size: 14px; line-height: 1.65; }
+  .store-links { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 2px; }
+  .store-links a { font-size: 13px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .foot-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .text-in { border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 8px 10px; font-size: 16px; width: 100%; max-width: 360px; }
+  .agree { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.6; cursor: pointer; }
+  .agree input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
+  .form .privacy { margin: 0; }
+  .course-list { display: grid; gap: 8px; }
+  .course { text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 10px 12px; cursor: pointer; display: grid; gap: 4px; }
+  .course.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .course-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .course-name { font-family: var(--serif); font-size: 15px; line-height: 1.5; }
+  .course-price { font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .course-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+  .pair-list { display: grid; gap: 6px; }
+  .pair { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; }
+  .pair-name { min-width: 0; }
+  .pair-n { min-width: 1.5em; text-align: center; font-variant-numeric: tabular-nums; }
+  .pair .stepper button { width: 30px; height: 30px; font-size: 16px; }
+  .pair-left { margin: 0; font-size: 12px; color: var(--ink-soft); }
+  .policy { border-left: 2px solid var(--accent); padding: 2px 0 2px 12px; display: grid; gap: 4px; }
+  .policy-text { margin: 0; font-size: 13px; line-height: 1.7; white-space: pre-wrap; }
+  .bk-head { display: grid; gap: 4px; }
+  .bk-title { margin: 0; font-family: var(--serif); font-size: 20px; letter-spacing: .04em; }
+  .bk-lead { margin: 0; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .bk-back { justify-self: start; border: none; background: none; padding: 0; font-size: 13px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .bk-step { margin: 0; font-family: var(--serif); font-size: 15px; }
+  .bk-avail { margin: 0; font-size: 14px; line-height: 1.6; padding: 8px 12px; border-radius: 6px; background: var(--paper-deep); }
+  .bk-avail.ok { background: #e7efe4; }
+  .bk-avail.ng { background: #f6e6dc; }
+  .bk-err { margin: 0; font-size: 14px; color: #9b2c1c; }
+  .bk-sum { margin: 0; font-size: 14px; line-height: 1.8; white-space: pre-wrap; }
+  .form { align-self: stretch; display: grid; gap: 14px; border: 1px solid var(--line); background: #fbf9f5; border-radius: 10px; padding: 14px 16px; }
+  .field { display: grid; gap: 6px; }
+  .field-label { margin: 0; font-size: 12px; letter-spacing: .08em; color: var(--ink-soft); }
+  .field input[type=date] { justify-self: start; border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 6px 10px; }
+  .stepper { display: flex; align-items: center; gap: 10px; }
+  .stepper button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--ink); background: transparent; font-size: 18px; line-height: 1; cursor: pointer; }
+  .stepper input { width: 64px; text-align: center; border: 1px solid var(--line); background: #fff; border-radius: 4px; padding: 6px 4px; font-variant-numeric: tabular-nums; }
+  .stepper span { font-size: 14px; color: var(--ink-soft); }
+  .chip.on, .chip.on:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+  .form .send-form { justify-self: start; border: none; background: var(--accent); color: #fff; border-radius: 20px; padding: 9px 20px; cursor: pointer; }
+  .form .send-form:disabled { opacity: .4; cursor: default; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="head">
+    <div>
+      <img class="logo" id="logo" alt="BIG HANDS MARKET" hidden>
+      <p class="brand" id="brandText">BIG HANDS MARKET</p>
+      <img class="catch" id="catch" alt="おもしろくなければ楽しく食べられない！" hidden>
+      <p class="tagline" id="tagline">A Gateway to Local Food Culture</p>
+    </div>
+    <select class="lang" id="lang" aria-label="Language"></select>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Stores" hidden></nav>
+  <section class="panel" id="panel" hidden></section>
+  <main class="log" id="log" aria-live="polite"></main>
+  <footer class="foot">
+    <form class="composer" id="composer">
+      <input id="hp" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+      <textarea id="input" rows="1" maxlength="1000"></textarea>
+      <button type="submit" class="send" id="send" disabled></button>
+    </form>
+    <div class="foot-links"><button class="privacy-link" id="privacyLink" type="button"></button><button class="privacy-link" id="restartLink" type="button" hidden></button></div>
+    <p class="privacy" id="privacy" hidden></p>
+  </footer>
+</div>
+
+<script type="application/json" id="cfg">{}</script>
+<script type="text/plain" id="app">
+var CFG = {};
+try { CFG = JSON.parse(document.getElementById('cfg').textContent) || {}; } catch (e) { CFG = {}; }
+var TEXT = {
+  ja: { label: '日本語', welcome: 'ようこそ BIG HANDS MARKET へ。\n角打ち、食堂、ラーメン、デリ、レストラン、日用品、お土産まで。長岡のローカルをまるごと楽しめる場所です。\n「どこで何が食べられる？」「記念日に使える？」「お土産は？」など、お気軽にどうぞ。山八のご予約もこのままお手伝いします。',
+    shortcuts: [['レストラン予約', '山八レストランの予約をしたいです'], ['団体・貸切', '団体・貸切の相談をしたいです'], ['ケータリング', 'ケータリング・オードブルの相談をしたいです'], ['食文化ツアー', '観光ツアー・食文化体験の相談をしたいです'], ['気軽に相談', 'ちょっと相談してもいいですか？']],
+    placeholder: 'ご用件をお書きください', send: '送信', privacy: '個人情報の取り扱い',
+    privacyBody: 'お名前・ご連絡先・ご相談内容は、お問い合わせへのご案内とご予約の管理のためにのみ、SUZU GROUP のスタッフが利用します。会話内容は一定期間保存したのち削除します。',
+    receiptTitle: '受付番号', receiptNote: 'スタッフ確認後にご案内します。この時点ではご予約は確定していません。', date: '希望日', people: '人数', peopleUnit: '名', style: '形式', sendForm: 'この内容で送る', map: '地図', web: 'Web', insta: 'Instagram', reserve: '予約', concierge: 'コンシェルジュ', hours: '営業時間', address: '住所', ask: 'このお店について相談する', askMsg: '{name}について教えてください', shopsTitle: '館内のお店', cName: 'お名前', cEmail: 'メールアドレス', cPhone: '電話番号', cAgree: '上記の内容で申し込み、個人情報の利用に同意します', cSend: '仮予約を申し込む', cMsg: 'お名前：{n}／メール：{e}／電話：{p}／上記の内容で申し込み、個人情報の利用に同意します', cNone: 'なし', cPolicyTitle: 'キャンセルポリシー', cNote: 'アレルギー・苦手な食材・記念日など（任意）', cNoteKey: 'ご要望', cPolicyAgree: 'キャンセルポリシーに同意します', kCourse: 'コース', kPair: 'ドリンクペアリング（1名ごと・任意）', kNone: 'ペアリングなし', kSend: 'この内容で選ぶ', kMsg: 'コース：{c}／ペアリング：{p}', kLeft: '残り {n} 名はペアリングなし', pickDate: 'この日付で送る', thinking: 'お調べしています…', newChat: '新しく始める', networkError: '通信に失敗しました。もう一度お送りください。' },
+  en: { label: 'English', welcome: "Welcome to BIG HANDS MARKET.\nA standing sake bar, a local diner, ramen, a deli, a restaurant, everyday goods and souvenirs — all of local Nagaoka under one roof.\nAsk us anything: where to eat, ideas for a special occasion, souvenirs. We can also help you book Yamahachi right here.",
+    shortcuts: [['Restaurant', "I'd like to make a reservation at Yamahachi."], ['Groups & private hire', "I'd like to ask about a group booking or private hire."], ['Catering', "I'd like to ask about catering."], ['Food culture tours', "I'm interested in a food culture tour or experience."], ['Just ask', 'Can I ask you something?']],
+    placeholder: 'How can we help?', send: 'Send', privacy: 'Privacy',
+    privacyBody: 'Your name, contact details and request are used by SUZU GROUP staff only to respond to your inquiry and manage your booking. Conversations are deleted after a set retention period.',
+    receiptTitle: 'Reference number', receiptNote: 'Our staff will contact you after checking. Your reservation is not yet confirmed.', date: 'Date', people: 'Guests', peopleUnit: 'guests', style: 'Style', sendForm: 'Send', map: 'Map', web: 'Website', insta: 'Instagram', reserve: 'Booking', concierge: 'Concierge', hours: 'Hours', address: 'Address', ask: 'Ask about this place', askMsg: 'Please tell me about {name}.', shopsTitle: 'Shops in the market', cName: 'Name', cEmail: 'Email', cPhone: 'Phone', cAgree: 'I confirm the details above and agree to the use of my personal information', cSend: 'Request reservation', cMsg: 'Name: {n} / Email: {e} / Phone: {p} / I confirm the details above and agree to the use of my personal information.', cNone: 'none', cPolicyTitle: 'Cancellation policy', cNote: 'Allergies, dislikes, special occasions (optional)', cNoteKey: 'Requests', cPolicyAgree: 'I agree to the cancellation policy', kCourse: 'Course', kPair: 'Drink pairing (per person, optional)', kNone: 'no pairing', kSend: 'Choose', kMsg: 'Course: {c} / Pairing: {p}', kLeft: '{n} without pairing', pickDate: 'Use this date', thinking: 'Checking…', newChat: 'Start over', networkError: 'Connection failed. Please try again.' },
+  fr: { label: 'Français', welcome: 'Bienvenue à BIG HANDS MARKET.\nBar à saké debout, cantine, ramen, traiteur, restaurant, produits du quotidien et souvenirs : tout le Nagaoka local réuni en un seul lieu.\nOù manger, une occasion spéciale, des souvenirs : posez-nous vos questions. Nous pouvons aussi réserver le Yamahachi pour vous.',
+    shortcuts: [['Restaurant', 'Je souhaite réserver au Yamahachi.'], ['Groupes & privatisation', 'Je souhaite me renseigner sur une réservation de groupe ou une privatisation.'], ['Traiteur', 'Je souhaite me renseigner sur le service traiteur.'], ['Circuits gastronomiques', 'Je suis intéressé(e) par un circuit ou une expérience culinaire.'], ['Une question ?', "J'ai une petite question."]],
+    placeholder: 'Comment pouvons-nous vous aider ?', send: 'Envoyer', privacy: 'Confidentialité',
+    privacyBody: "Vos nom, coordonnées et demande sont utilisés par l'équipe de SUZU GROUP uniquement pour répondre à votre demande et gérer votre réservation.",
+    receiptTitle: 'Numéro de référence', receiptNote: "Notre équipe vous recontactera après vérification. Votre réservation n'est pas encore confirmée.", date: 'Date', people: 'Personnes', peopleUnit: 'pers.', style: 'Formule', sendForm: 'Envoyer', map: 'Plan', web: 'Site', insta: 'Instagram', reserve: 'Réservation', concierge: 'Concierge', hours: 'Horaires', address: 'Adresse', ask: 'Poser une question', askMsg: 'Pouvez-vous me parler de {name} ?', shopsTitle: 'Les boutiques du marché', cName: 'Nom', cEmail: 'E-mail', cPhone: 'Téléphone', cAgree: 'Je confirme les informations ci-dessus et accepte l’utilisation de mes données personnelles', cSend: 'Envoyer la demande', cMsg: 'Nom : {n} / E-mail : {e} / Téléphone : {p} / Je confirme les informations ci-dessus et accepte l’utilisation de mes données personnelles.', cNone: 'aucun', cPolicyTitle: 'Conditions d’annulation', cNote: 'Allergies, aversions, occasion spéciale (facultatif)', cNoteKey: 'Demandes', cPolicyAgree: 'J’accepte les conditions d’annulation', kCourse: 'Menu', kPair: 'Accord mets-boissons (par personne, facultatif)', kNone: 'sans accord', kSend: 'Valider', kMsg: 'Menu : {c} / Accord : {p}', kLeft: '{n} sans accord', pickDate: 'Choisir cette date', thinking: 'Vérification…', newChat: 'Recommencer', networkError: 'La connexion a échoué. Veuillez réessayer.' },
+  ko: { label: '한국어', welcome: 'BIG HANDS MARKET에 오신 것을 환영합니다.\n선술집(가쿠우치), 식당, 라멘, 델리, 레스토랑, 생활용품, 기념품까지. 나가오카의 로컬을 통째로 즐길 수 있는 곳입니다.\n어디서 무엇을 먹을지, 기념일, 기념품 등 편하게 물어보세요. 야마하치 예약도 바로 도와드립니다.',
+    shortcuts: [['레스토랑 예약', '야마하치 레스토랑을 예약하고 싶습니다.'], ['단체·대관', '단체 예약이나 대관을 상담하고 싶습니다.'], ['케이터링', '케이터링을 상담하고 싶습니다.'], ['음식 문화 투어', '음식 문화 투어나 체험에 관심이 있습니다.'], ['편하게 상담', '편하게 물어봐도 될까요?']],
+    placeholder: '용건을 입력해 주세요', send: '보내기', privacy: '개인정보 처리',
+    privacyBody: '성함, 연락처, 상담 내용은 문의 안내와 예약 관리를 위해서만 SUZU GROUP 직원이 이용합니다.',
+    receiptTitle: '접수 번호', receiptNote: '직원 확인 후 안내해 드립니다. 아직 예약이 확정된 것은 아닙니다.', date: '희망일', people: '인원', peopleUnit: '명', style: '형식', sendForm: '이 내용으로 보내기', map: '지도', web: '웹사이트', insta: 'Instagram', reserve: '예약', concierge: '컨시어지', hours: '영업시간', address: '주소', ask: '이 가게에 대해 문의하기', askMsg: '{name}에 대해 알려 주세요.', shopsTitle: '관내 매장', cName: '성함', cEmail: '이메일', cPhone: '전화번호', cAgree: '위 내용으로 신청하며 개인정보 이용에 동의합니다', cSend: '가예약 신청', cMsg: '성함：{n}／이메일：{e}／전화：{p}／위 내용으로 신청하며 개인정보 이용에 동의합니다', cNone: '없음', cPolicyTitle: '취소 규정', cNote: '알레르기·못 드시는 음식·기념일 등 (선택)', cNoteKey: '요청 사항', cPolicyAgree: '취소 규정에 동의합니다', kCourse: '코스', kPair: '드링크 페어링（1인별・선택）', kNone: '페어링 없음', kSend: '이 내용으로 선택', kMsg: '코스：{c}／페어링：{p}', kLeft: '나머지 {n}명은 페어링 없음', pickDate: '이 날짜로 보내기', thinking: '확인 중…', newChat: '새로 시작', networkError: '통신에 실패했습니다. 다시 보내 주세요.' },
+  zh: { label: '中文', welcome: '欢迎来到 BIG HANDS MARKET。\n站饮酒吧、食堂、拉面、熟食、餐厅，还有日用品和伴手礼。在这里可以尽情享受长冈的在地生活。\n去哪里吃、纪念日、伴手礼，都可以随便问。也可以直接帮您预约山八。',
+    shortcuts: [['餐厅预约', '我想预约山八餐厅。'], ['团体·包场', '我想咨询团体预约或包场。'], ['餐饮外送', '我想咨询餐饮外送服务。'], ['饮食文化之旅', '我对饮食文化之旅或体验感兴趣。'], ['随便问问', '可以随便问一下吗？']],
+    placeholder: '请输入您的需求', send: '发送', privacy: '个人信息处理',
+    privacyBody: '您的姓名、联系方式和咨询内容仅由 SUZU GROUP 工作人员用于回复咨询及管理预约。',
+    receiptTitle: '受理编号', receiptNote: '工作人员确认后将与您联系。目前预约尚未确定。', date: '希望日期', people: '人数', peopleUnit: '位', style: '形式', sendForm: '发送', map: '地图', web: '网站', insta: 'Instagram', reserve: '预约', concierge: '礼宾服务', hours: '营业时间', address: '地址', ask: '咨询这家店', askMsg: '请介绍一下{name}。', shopsTitle: '馆内店铺', cName: '姓名', cEmail: '电子邮箱', cPhone: '电话', cAgree: '确认以上内容并同意个人信息的使用', cSend: '提交预约申请', cMsg: '姓名：{n}／邮箱：{e}／电话：{p}／确认以上内容并同意个人信息的使用', cNone: '无', cPolicyTitle: '取消政策', cNote: '过敏・忌口・纪念日等（选填）', cNoteKey: '要求', cPolicyAgree: '同意取消政策', kCourse: '套餐', kPair: '酒水搭配（按人・可选）', kNone: '不搭配', kSend: '确认选择', kMsg: '套餐：{c}／搭配：{p}', kLeft: '其余 {n} 位不搭配', pickDate: '选择此日期', thinking: '正在查询…', newChat: '重新开始', networkError: '通信失败，请重新发送。' }
+};
+
+var KEY = 'bh-concierge-v1';
+var state = { lang: 'ja', sessionId: '', messages: [], pending: false, dateValue: '', people: 2, style: '', view: 'chat' };
+
+function newId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+}
+function detectLang() {
+  var l = (navigator.language || 'ja').slice(0, 2).toLowerCase();
+  return TEXT[l] ? l : 'en';
+}
+function save() { try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function load() {
+  try {
+    var s = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+    if (s && s.sessionId) { state.sessionId = s.sessionId; state.messages = s.messages || []; state.lang = s.lang || detectLang(); return; }
+  } catch (e) {}
+  state.sessionId = newId();
+  state.lang = detectLang();
+}
+
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function render() {
+  var t = TEXT[state.lang];
+  document.documentElement.lang = state.lang;
+  document.getElementById('input').placeholder = t.placeholder;
+  document.getElementById('input').setAttribute('aria-label', t.placeholder);
+  document.getElementById('send').textContent = t.send;
+  document.getElementById('privacyLink').textContent = t.privacy;
+  document.getElementById('privacy').textContent = t.privacyBody;
+  var rl = document.getElementById('restartLink');
+  rl.textContent = t.newChat;
+  rl.hidden = !!state.pending;
+  document.getElementById('lang').value = state.lang;
+  renderTabs(t);
+  var store = state.view !== 'chat' && (CFG.tabs || []).filter(function (s) { return s.id === state.view; })[0];
+  document.getElementById('panel').hidden = !store;
+  document.getElementById('log').hidden = !!store;
+  if (store) { renderPanel(store, t); updateSend(); return; }
+
+  var log = document.getElementById('log');
+  log.innerHTML = '';
+  if (state.view === 'book' && bk) { renderBook(log, t); updateSend(); return; }
+  if (state.view === 'inquiry' && iq) { renderInquiry(log, t); updateSend(); return; }
+  if (state.view === 'reception' && rc) { renderReception(log, t); updateSend(); return; }
+  if (CFG.reception && !state.messages.length) {
+    var rb = el('button', 'ask', (CFG.reception.title || 'オープニングレセプション') + 'のご案内'); rb.type = 'button';
+    rb.onclick = openReception;
+    log.appendChild(rb);
+  }
+  if (CFG.hero && !state.messages.length) {
+    var hero = el('div', 'hero');
+    var hi = document.createElement('img');
+    hi.src = CFG.hero; hi.alt = ''; hi.onerror = function () { hero.remove(); };
+    hero.appendChild(hi);
+    log.appendChild(hero);
+  }
+  log.appendChild(el('p', 'bubble assistant welcome', t.welcome));
+
+  if (!state.messages.length && CFG.promo && CFG.booking && !CFG.booking.stopped) {
+    var ja = state.lang === 'ja';
+    var pr = el('div', 'promo');
+    pr.appendChild(el('p', 'promo-title', ja ? CFG.promo.title : 'Year-end & New Year parties'));
+    var ptxt = ja ? CFG.promo.text : 'Now taking bookings for year-end and New Year parties. Food from 5,000 JPY per person, all-you-can-drink from 2,000 JPY (2 hours). From small dinners to private hire of the whole market — just ask.';
+    if (ptxt) pr.appendChild(el('p', 'promo-text', ptxt));
+    var pb = el('button', 'ask', ja ? '団体・貸切の申し込み・ご相談' : 'Request a party booking'); pb.type = 'button';
+    pb.onclick = function () { openInquiry('group'); if (!iq.note) { iq.note = ja ? '忘年会・新年会' : 'Year-end / New Year party'; render(); } };
+    pr.appendChild(pb);
+    log.appendChild(pr);
+  }
+  if (!state.messages.length) {
+    var chips = el('div', 'chips');
+    t.shortcuts.forEach(function (s) {
+      var cat = ['restaurant', 'group', 'catering', 'tour', 'other'][t.shortcuts.indexOf(s)];
+      if (CFG.categories && CFG.categories.indexOf(cat) < 0) return;
+      var b = el('button', 'chip', s[0]);
+      b.type = 'button';
+      b.onclick = function () { if (cat === 'restaurant' && CFG.booking && !CFG.booking.stopped && (CFG.booking.courses || []).length) openBook(); else if ((cat === 'group' || cat === 'tour') && CFG.booking && !CFG.booking.stopped) openInquiry(cat); else send(s[1], cat); };
+      chips.appendChild(b);
+    });
+    log.appendChild(chips);
+  }
+  if (!state.messages.length && (CFG.tabs || []).length) {
+    var sec = el('div', 'shops');
+    sec.appendChild(el('p', 'shops-title', t.shopsTitle));
+    var grid = el('div', 'shop-grid');
+    CFG.tabs.map(locStore).forEach(function (st) {
+      var b = el('button', 'shop');
+      b.type = 'button';
+      if (st.image) {
+        var im = document.createElement('img');
+        im.src = st.image; im.alt = ''; im.loading = 'lazy';
+        b.classList.add('has-img');
+        im.onerror = function () { im.remove(); b.classList.remove('has-img'); };
+        b.appendChild(im);
+      }
+      b.appendChild(el('span', '', st.name.replace(/\s*-.*-\s*$/, '')));
+      if (st.genre) b.appendChild(el('small', '', st.genre));
+      b.onclick = function () { state.view = st.id; render(); window.scrollTo(0, 0); };
+      grid.appendChild(b);
+    });
+    sec.appendChild(grid);
+    log.appendChild(sec);
+  }
+
+  state.messages.forEach(function (m) {
+    var row = el('div', 'row ' + m.role);
+    row.appendChild(el('p', 'bubble ' + m.role, m.role === 'assistant' ? String(m.content).replace(/\*\*/g, '') : m.content));
+    (m.ui || []).forEach(function (u) {
+      if (u.type === 'stores') { row.appendChild(storeCards(u.items || [], t)); return; }
+      if (u.type !== 'receipt') return;
+      var card = el('div', 'receipt');
+      card.appendChild(el('p', 'receipt-label', t.receiptTitle));
+      card.appendChild(el('p', 'receipt-id', u.receiptId));
+      card.appendChild(el('p', 'receipt-note', t.receiptNote));
+      row.appendChild(card);
+    });
+    log.appendChild(row);
+  });
+
+  if (state.pending) log.appendChild(el('p', 'bubble assistant thinking', t.thinking));
+
+  var last = state.messages[state.messages.length - 1];
+  if (!state.pending && last && last.role === 'assistant') {
+    (last.ui || []).forEach(function (u) {
+      if (u.type === 'choices') {
+        var c = el('div', 'chips');
+        u.options.forEach(function (o) {
+          var b = el('button', 'chip', o);
+          b.type = 'button';
+          b.onclick = function () { send(o); };
+          c.appendChild(b);
+        });
+        log.appendChild(c);
+      } else if (u.type === 'date') {
+        var d = el('div', 'datepick');
+        var inp = document.createElement('input');
+        inp.type = 'date';
+        if (u.min) inp.min = u.min;
+        inp.value = state.dateValue;
+        var b2 = el('button', 'chip', t.pickDate);
+        b2.type = 'button';
+        b2.disabled = !state.dateValue;
+        inp.oninput = function () { state.dateValue = inp.value; b2.disabled = !inp.value; };
+        b2.onclick = function () { send(inp.value); };
+        d.appendChild(inp);
+        d.appendChild(b2);
+        log.appendChild(d);
+      } else if (u.type === 'details') {
+        log.appendChild(detailsForm(u, t));
+      } else if (u.type === 'course') {
+        log.appendChild(courseForm(u, t));
+      } else if (u.type === 'contact') {
+        log.appendChild(contactForm(t, u));
+      }
+    });
+    if ((last.ui || []).some(function (u) { return u.type === 'receipt'; })) {
+      var r = el('button', 'link', t.newChat);
+      r.type = 'button';
+      r.onclick = function () { state.messages = []; state.sessionId = newId(); save(); render(); };
+      log.appendChild(r);
+    }
+  }
+  var end = el('div', 'end');
+  log.appendChild(end);
+  requestAnimationFrame(function () { end.scrollIntoView({ block: 'end' }); });
+  updateSend();
+}
+
+function locStore(s) {
+  if (!s || state.lang === 'ja' || !s.en) return s;
+  var o = {};
+  Object.keys(s).forEach(function (k) { o[k] = s[k]; });
+  ['name', 'genre', 'description', 'area', 'hours', 'reserve'].forEach(function (k) { if (s.en[k]) o[k] = s.en[k]; });
+  return o;
+}
+
+function renderTabs(t) {
+  var nav = document.getElementById('tabs');
+  var tabs = CFG.tabs || [];
+  nav.hidden = !tabs.length;
+  if (!tabs.length) return;
+  nav.innerHTML = '';
+  [{ id: 'chat', name: t.concierge }].concat(tabs.map(locStore)).forEach(function (s) {
+    var b = el('button', 'tab' + (state.view === s.id ? ' on' : ''), s.name.replace(/\s*-.*-\s*$/, ''));
+    b.type = 'button';
+    b.setAttribute('aria-pressed', state.view === s.id ? 'true' : 'false');
+    b.onclick = function () { state.view = s.id; render(); window.scrollTo(0, 0); };
+    nav.appendChild(b);
+  });
+}
+
+function renderPanel(s, t) {
+  s = locStore(s);
+  var p = document.getElementById('panel');
+  p.innerHTML = '';
+  if (s.image) {
+    var hero = el('div', 'hero');
+    var img = document.createElement('img');
+    img.src = s.image; img.alt = s.name; img.onerror = function () { hero.remove(); };
+    hero.appendChild(img);
+    p.appendChild(hero);
+  }
+  p.appendChild(el('h1', 'panel-name', s.name));
+  var meta = [s.genre, s.area].filter(Boolean).join('｜');
+  if (meta) p.appendChild(el('p', 'panel-meta', meta));
+  if (s.description) p.appendChild(el('p', 'panel-desc', s.description));
+  var dl = document.createElement('dl');
+  [[t.hours, s.hours], [t.reserve, s.reserve], [t.address, s.address]].forEach(function (r) {
+    if (!r[1]) return;
+    dl.appendChild(el('dt', '', r[0]));
+    dl.appendChild(el('dd', '', r[1]));
+  });
+  if (dl.childNodes.length) p.appendChild(dl);
+  var links = el('div', 'store-links');
+  [[s.map, t.map], [s.web, t.web], [s.instagram, t.insta]].forEach(function (x) {
+    if (!x[0] || !/^https:\/\//.test(x[0])) return;
+    var a = el('a', '', x[1]);
+    a.href = x[0]; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    links.appendChild(a);
+  });
+  if (links.childNodes.length) p.appendChild(links);
+  var ask = el('button', 'ask', t.ask);
+  ask.type = 'button';
+  ask.onclick = function () { state.view = 'chat'; send(t.askMsg.replace('{name}', s.name)); };
+  p.appendChild(ask);
+  if (s.id === 'yamahachi' && CFG.booking && !CFG.booking.stopped && (CFG.booking.courses || []).length) {
+    var bkb = el('button', 'ask', bookText().title); bkb.type = 'button';
+    bkb.onclick = openBook;
+    p.insertBefore(bkb, ask);
+  }
+}
+
+function storeCards(items, t) {
+  var wrap = el('div', 'stores');
+  items.map(locStore).forEach(function (s) {
+    var card = el('div', 'store' + (s.image ? '' : ' noimg'));
+    if (s.image) {
+      var img = document.createElement('img');
+      img.src = s.image; img.alt = s.name; img.loading = 'lazy';
+      img.onerror = function () { img.remove(); card.classList.add('noimg'); };
+      card.appendChild(img);
+    }
+    var b = el('div', 'store-body');
+    b.appendChild(el('p', 'store-name', s.name));
+    var meta = [s.genre, s.area].filter(Boolean).join('｜');
+    if (meta) b.appendChild(el('p', 'store-meta', meta));
+    if (s.description) b.appendChild(el('p', 'store-desc', s.description));
+    if (s.hours) b.appendChild(el('p', 'store-meta', s.hours));
+    if (s.reserve) b.appendChild(el('p', 'store-meta', t.reserve + '：' + s.reserve));
+    var links = el('div', 'store-links');
+    [[s.map, t.map], [s.web, t.web], [s.instagram, t.insta]].forEach(function (p) {
+      if (!p[0] || !/^https:\/\//.test(p[0])) return;
+      var a = el('a', '', p[1]);
+      a.href = p[0]; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      links.appendChild(a);
+    });
+    if (links.childNodes.length) b.appendChild(links);
+    card.appendChild(b);
+    wrap.appendChild(card);
+  });
+  return wrap;
+}
+
+function formatDate(iso) {
+  try {
+    var p = iso.split('-').map(Number);
+    var wd = new Intl.DateTimeFormat(state.lang, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(p[0], p[1] - 1, p[2])));
+    return iso + '（' + wd + '）';
+  } catch (e) { return iso; }
+}
+
+function courseForm(u, t) {
+  var f = el('div', 'form');
+  var people = Number(u.people) || 2;
+  var chosen = '';
+  var counts = {};
+  f.appendChild(el('p', 'field-label', t.kCourse));
+  var list = el('div', 'course-list');
+  (u.courses || []).forEach(function (c) {
+    var b = el('button', 'course');
+    b.type = 'button';
+    var top = el('span', 'course-top');
+    top.appendChild(el('span', 'course-name', c.name));
+    if (c.price) top.appendChild(el('span', 'course-price', c.price));
+    b.appendChild(top);
+    if (c.description) b.appendChild(el('span', 'course-desc', c.description));
+    b.onclick = function () {
+      chosen = c.name;
+      list.querySelectorAll('.course').forEach(function (x) { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      check();
+    };
+    list.appendChild(b);
+  });
+  f.appendChild(list);
+  var left = el('p', 'pair-left', '');
+  if ((u.pairings || []).length) {
+    f.appendChild(el('p', 'field-label', t.kPair));
+    var pl = el('div', 'pair-list');
+    (u.pairings || []).forEach(function (p) {
+      counts[p.name] = 0;
+      var row = el('div', 'pair');
+      var lab = el('span', 'pair-name', p.name + (p.price ? '　' + p.price : ''));
+      var st = el('div', 'stepper');
+      var minus = el('button', '', '−'); minus.type = 'button';
+      var val = el('span', 'pair-n', '0');
+      var plus = el('button', '', '+'); plus.type = 'button';
+      var total = function () { return Object.keys(counts).reduce(function (a, k) { return a + counts[k]; }, 0); };
+      minus.onclick = function () { if (counts[p.name] > 0) { counts[p.name]--; val.textContent = counts[p.name]; check(); } };
+      plus.onclick = function () { if (total() < people) { counts[p.name]++; val.textContent = counts[p.name]; check(); } };
+      st.appendChild(minus); st.appendChild(val); st.appendChild(plus);
+      row.appendChild(lab); row.appendChild(st);
+      pl.appendChild(row);
+    });
+    f.appendChild(pl);
+    f.appendChild(left);
+  }
+  var go = el('button', 'send-form', t.kSend);
+  go.type = 'button';
+  function check() {
+    var used = Object.keys(counts).reduce(function (a, k) { return a + counts[k]; }, 0);
+    left.textContent = t.kLeft.replace('{n}', people - used);
+    go.disabled = !chosen;
+  }
+  go.onclick = function () {
+    var parts = Object.keys(counts).filter(function (k) { return counts[k] > 0; }).map(function (k) { return k + '×' + counts[k]; });
+    var used = Object.keys(counts).reduce(function (a, k) { return a + counts[k]; }, 0);
+    if (people - used > 0) parts.push(t.kNone + '×' + (people - used));
+    send(t.kMsg.replace('{c}', chosen).replace('{p}', parts.join('、')));
+  };
+  f.appendChild(go);
+  check();
+  return f;
+}
+
+function contactForm(t, u) {
+  var f = el('div', 'form');
+  var field = function (label, type, id, ac) {
+    var w = el('div', 'field');
+    var l = el('label', 'field-label', label);
+    l.setAttribute('for', id);
+    var i = document.createElement('input');
+    i.type = type; i.id = id; i.autocomplete = ac;
+    i.className = 'text-in';
+    w.appendChild(l); w.appendChild(i); f.appendChild(w);
+    return i;
+  };
+  var n = field(t.cName, 'text', 'c-name', 'name');
+  var e = field(t.cEmail, 'email', 'c-email', 'email');
+  var p = field(t.cPhone, 'tel', 'c-phone', 'tel');
+  var policy = u && u.policy ? String(u.policy) : '';
+  var pcb = null;
+  if (policy) {
+    var box = el('div', 'policy');
+    box.appendChild(el('p', 'field-label', t.cPolicyTitle));
+    box.appendChild(el('p', 'policy-text', policy));
+    f.appendChild(box);
+    var pw = el('label', 'agree');
+    pcb = document.createElement('input');
+    pcb.type = 'checkbox'; pcb.id = 'c-policy';
+    pw.appendChild(pcb);
+    pw.appendChild(el('span', '', t.cPolicyAgree));
+    f.appendChild(pw);
+  }
+  var note = null;
+  if (policy) {
+    var nw = el('div', 'field');
+    var nl = el('label', 'field-label', t.cNote);
+    nl.setAttribute('for', 'c-note');
+    note = document.createElement('textarea');
+    note.id = 'c-note'; note.className = 'text-in'; note.rows = 2; note.maxLength = 300;
+    nw.appendChild(nl); nw.appendChild(note);
+    f.insertBefore(nw, box);
+  }
+  var agreeWrap = el('label', 'agree');
+  var cb = document.createElement('input');
+  cb.type = 'checkbox'; cb.id = 'c-agree';
+  agreeWrap.appendChild(cb);
+  agreeWrap.appendChild(el('span', '', t.cAgree));
+  f.appendChild(agreeWrap);
+  f.appendChild(el('p', 'privacy', t.privacyBody));
+  var go = el('button', 'send-form', t.cSend);
+  go.type = 'button';
+  var ok = function () { return n.value.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.value.trim()) && /^[0-9+\-() ]{6,20}$/.test(p.value.trim()) && cb.checked && (!pcb || pcb.checked); };
+  var check = function () { go.disabled = !ok(); };
+  [n, e, p].forEach(function (i) { i.oninput = check; });
+  cb.onchange = check;
+  if (pcb) pcb.onchange = check;
+  go.onclick = function () {
+    if (!ok()) return;
+    send(t.cMsg.replace('{n}', n.value.trim()).replace('{e}', e.value.trim()).replace('{p}', p.value.trim()) + (note && note.value.trim() ? '／' + t.cNoteKey + '：' + note.value.trim().replace(/\s+/g, ' ') : '') + (pcb ? '／' + t.cPolicyAgree : ''));
+  };
+  f.appendChild(go);
+  check();
+  return f;
+}
+
+function detailsForm(u, t) {
+  var f = el('div', 'form');
+  // 日付
+  var fd = el('div', 'field');
+  fd.appendChild(el('p', 'field-label', t.date));
+  var di = document.createElement('input');
+  di.type = 'date';
+  di.id = 'detail-date';
+  if (u.min) di.min = u.min;
+  di.value = state.dateValue;
+  fd.appendChild(di);
+  f.appendChild(fd);
+  // 人数
+  var fp = el('div', 'field');
+  fp.appendChild(el('p', 'field-label', t.people));
+  var st = el('div', 'stepper');
+  var minus = el('button', '', '−'); minus.type = 'button'; minus.setAttribute('aria-label', '-1');
+  var pi = document.createElement('input');
+  pi.type = 'number'; pi.id = 'detail-people'; pi.min = 1; pi.max = 300; pi.inputMode = 'numeric'; pi.value = state.people;
+  var plus = el('button', '', '+'); plus.type = 'button'; plus.setAttribute('aria-label', '+1');
+  var setP = function (n) { n = Math.max(1, Math.min(300, Math.round(Number(n) || 1))); state.people = n; pi.value = n; check(); };
+  minus.onclick = function () { setP(state.people - 1); };
+  plus.onclick = function () { setP(state.people + 1); };
+  pi.oninput = function () { state.people = Number(pi.value) || 0; check(); };
+  pi.onblur = function () { setP(pi.value); };
+  st.appendChild(minus); st.appendChild(pi); st.appendChild(plus); st.appendChild(el('span', '', t.peopleUnit));
+  fp.appendChild(st);
+  f.appendChild(fp);
+  // 形式
+  var styleLabel = u.styleLabel || t.style;
+  if (u.styles && u.styles.length) {
+    var fs = el('div', 'field');
+    fs.appendChild(el('p', 'field-label', styleLabel));
+    var chips = el('div', 'chips');
+    u.styles.forEach(function (o) {
+      var b = el('button', 'chip' + (state.style === o ? ' on' : ''), o);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', state.style === o ? 'true' : 'false');
+      b.onclick = function () {
+        state.style = state.style === o ? '' : o;
+        chips.querySelectorAll('.chip').forEach(function (c) { var on = c.textContent === state.style; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+        check();
+      };
+      chips.appendChild(b);
+    });
+    fs.appendChild(chips);
+    f.appendChild(fs);
+  }
+  var go = el('button', 'send-form', t.sendForm);
+  go.type = 'button';
+  function check() { go.disabled = !di.value || !(state.people >= 1) || (u.styles && u.styles.length && !state.style); }
+  di.oninput = function () { state.dateValue = di.value; check(); };
+  go.onclick = function () {
+    var parts = [t.date + '：' + formatDate(di.value), t.people + '：' + state.people + (state.lang === 'ja' || state.lang === 'ko' || state.lang === 'zh' ? '' : ' ') + t.peopleUnit];
+    if (u.styles && u.styles.length) parts.push(styleLabel + '：' + state.style);
+    var msg = parts.join('／');
+    state.style = '';
+    send(msg);
+  };
+  f.appendChild(go);
+  check();
+  return f;
+}
+
+/* ===== 山八のサクッと予約フォーム（AIを使わない） ===== */
+var BOOK_TEXT = {
+  ja: { seat: 'お席', title: '山八 ご予約', lead: 'ディナーは19:00一斉スタートです。この画面で仮予約まで完了します。スタッフが確認後、確定のメールをお送りします。', back: '← チャットに戻る',
+    s1: '1. 日付・人数・お席', s2: '2. コースとペアリング', s3: '3. ご連絡先', seats: [['either', 'おまかせ'], ['counter', 'カウンター'], ['private', '個室']],
+    checking: '空き状況を確認しています…', open: '{d} {t}〜 お席をご用意できます。', full: 'ご希望のお席は満席です。キャンセル待ちとしてお申し込みいただけます（空きが出たらご連絡します）。',
+    closed: 'この日はご予約を承れません。', ask: '{d} はスタッフが確認のうえご案内します。このままお申し込みいただけます。', group: '大人数のご予約は「団体・貸切」としてチャットでご相談ください。', pick: '日付を選ぶと空き状況が表示されます。',
+    note: 'アレルギー・苦手な食材・記念日など（任意）', submit: '仮予約を申し込む', submitWait: 'キャンセル待ちで申し込む', sending: '送信しています…',
+    doneTitle: '仮予約を承りました', doneWait: 'キャンセル待ちで承りました', doneNote: 'スタッフが確認し、確定しましたらメールでお知らせします。この時点ではご予約は確定していません。控えのメールをお送りしました。',
+    doneWaitNote: 'お席に空きが出ましたら、スタッフよりご連絡いたします。この時点ではご予約ではありません。', total: '料金の目安', staff: 'スタッフよりご案内', chat: 'ほかに質問する（チャット）',
+    errFull: '直前に満席になりました。キャンセル待ちでお申し込みいただけます。', errBusy: '混み合っています。少し待ってからもう一度お試しください。', errFail: '送信できませんでした。お手数ですがメールでお問い合わせください：', errCheck: '入力内容をご確認ください。' },
+  en: { seat: 'Seating', title: 'Book Yamahachi', lead: 'Dinner starts at 19:00 for all guests. You can request your reservation right here; our staff will email you once it is confirmed.', back: '← Back to chat',
+    s1: '1. Date, guests & seating', s2: '2. Course & pairing', s3: '3. Your details', seats: [['either', 'No preference'], ['counter', 'Counter'], ['private', 'Private room']],
+    checking: 'Checking availability…', open: 'Seats available on {d} from {t}.', full: 'Your preferred seating is full. You can join the waiting list and we will contact you if a seat opens.',
+    closed: 'We cannot take reservations on this date.', ask: 'Our staff will confirm availability for {d}. You can still send your request.', group: 'For larger parties, please ask about group bookings in the chat.', pick: 'Choose a date to see availability.',
+    note: 'Allergies, dislikes, special occasions (optional)', submit: 'Request reservation', submitWait: 'Join the waiting list', sending: 'Sending…',
+    doneTitle: 'Request received', doneWait: 'Added to the waiting list', doneNote: 'Our staff will check and email you once it is confirmed. Your reservation is not confirmed yet. A copy has been sent to your email.',
+    doneWaitNote: 'We will contact you if a seat opens. This is not a reservation yet.', total: 'Estimated total', staff: 'Staff will confirm', chat: 'Ask something else (chat)',
+    errFull: 'The last seats were just taken. You can join the waiting list.', errBusy: 'We are busy right now. Please try again shortly.', errFail: 'We could not send your request. Please email us:', errCheck: 'Please check your entries.' },
+  fr: { seat: 'Place', title: 'Réserver au Yamahachi', lead: 'Le dîner commence à 19h00 pour tous. Envoyez votre demande ici ; nous vous confirmerons par e-mail.', back: '← Retour au chat',
+    s1: '1. Date, personnes et place', s2: '2. Menu et accord', s3: '3. Vos coordonnées', seats: [['either', 'Indifférent'], ['counter', 'Comptoir'], ['private', 'Salon privé']],
+    checking: 'Vérification…', open: 'Places disponibles le {d} à partir de {t}.', full: 'Complet pour cette option. Vous pouvez vous inscrire sur liste d’attente.',
+    closed: 'Pas de réservation possible ce jour-là.', ask: 'Notre équipe confirmera la disponibilité du {d}. Vous pouvez envoyer votre demande.', group: 'Pour les groupes, contactez-nous via le chat.', pick: 'Choisissez une date pour voir les disponibilités.',
+    note: 'Allergies, aversions, occasion spéciale (facultatif)', submit: 'Envoyer la demande', submitWait: 'Liste d’attente', sending: 'Envoi…',
+    doneTitle: 'Demande reçue', doneWait: 'Inscrit sur liste d’attente', doneNote: 'Notre équipe vous confirmera par e-mail. La réservation n’est pas encore confirmée.',
+    doneWaitNote: 'Nous vous contacterons si une place se libère.', total: 'Total estimé', staff: 'Confirmé par l’équipe', chat: 'Poser une autre question (chat)',
+    errFull: 'Les dernières places viennent d’être prises. Liste d’attente possible.', errBusy: 'Veuillez réessayer dans un instant.', errFail: 'Envoi impossible. Écrivez-nous :', errCheck: 'Veuillez vérifier vos informations.' },
+  ko: { seat: '좌석', title: '야마하치 예약', lead: '디너는 19:00 일제 시작입니다. 이 화면에서 가예약까지 완료됩니다. 직원 확인 후 확정 메일을 보내 드립니다.', back: '← 채팅으로 돌아가기',
+    s1: '1. 날짜·인원·좌석', s2: '2. 코스와 페어링', s3: '3. 연락처', seats: [['either', '상관없음'], ['counter', '카운터'], ['private', '개별실']],
+    checking: '빈자리를 확인 중…', open: '{d} {t}부터 자리가 있습니다.', full: '희망 좌석이 만석입니다. 취소 대기로 신청할 수 있습니다.',
+    closed: '이 날은 예약을 받을 수 없습니다.', ask: '{d}은 직원이 확인 후 안내드립니다. 그대로 신청하셔도 됩니다.', group: '단체 예약은 채팅에서 상담해 주세요.', pick: '날짜를 선택하면 빈자리가 표시됩니다.',
+    note: '알레르기·못 드시는 음식·기념일 등 (선택)', submit: '가예약 신청', submitWait: '취소 대기 신청', sending: '보내는 중…',
+    doneTitle: '가예약을 접수했습니다', doneWait: '취소 대기로 접수했습니다', doneNote: '직원 확인 후 확정되면 메일로 알려 드립니다. 아직 확정된 예약은 아닙니다.',
+    doneWaitNote: '자리가 나면 직원이 연락드립니다.', total: '예상 금액', staff: '직원이 안내', chat: '다른 질문하기 (채팅)',
+    errFull: '방금 만석이 되었습니다. 취소 대기로 신청할 수 있습니다.', errBusy: '잠시 후 다시 시도해 주세요.', errFail: '보내지 못했습니다. 메일로 문의해 주세요:', errCheck: '입력 내용을 확인해 주세요.' },
+  zh: { seat: '座位', title: '预约山八', lead: '晚餐19:00统一开始。在此页面即可完成预约申请，工作人员确认后将发送确认邮件。', back: '← 返回聊天',
+    s1: '1. 日期・人数・座位', s2: '2. 套餐与搭配', s3: '3. 联系方式', seats: [['either', '均可'], ['counter', '吧台'], ['private', '包间']],
+    checking: '正在查询空位…', open: '{d} {t} 起有空位。', full: '所选座位已满。可以登记候补，有空位时我们会联系您。',
+    closed: '该日不接受预约。', ask: '{d} 的空位将由工作人员确认，您可以直接提交申请。', group: '多人预约请在聊天中咨询团体预约。', pick: '选择日期后显示空位情况。',
+    note: '过敏・忌口・纪念日等（选填）', submit: '提交预约申请', submitWait: '登记候补', sending: '正在发送…',
+    doneTitle: '已收到预约申请', doneWait: '已登记候补', doneNote: '工作人员确认后将通过邮件通知您。目前预约尚未确定。',
+    doneWaitNote: '有空位时工作人员会联系您。', total: '预估金额', staff: '由工作人员告知', chat: '其他问题（聊天）',
+    errFull: '刚刚已满座，可以登记候补。', errBusy: '请稍后再试。', errFail: '发送失败，请发邮件联系：', errCheck: '请检查填写内容。' }
+};
+var bk = null;
+function bookText() { return BOOK_TEXT[state.lang] || BOOK_TEXT.en; }
+function openBook() {
+  if (!bk || bk.result) bk = { date: '', people: 2, seat: 'either', course: '', pairs: {}, name: '', email: '', phone: '', note: '', policy: false, agree: false, avail: null, checking: false, sending: false, err: '', result: null, seq: 0 };
+  state.view = 'book';
+  render();
+  window.scrollTo(0, 0);
+}
+function bookCheck(update) {
+  if (!bk.date) { bk.avail = null; update(); return; }
+  var my = ++bk.seq;
+  bk.checking = true; update();
+  google.script.run.withSuccessHandler(function (r) {
+    if (my !== bk.seq) return;
+    bk.checking = false; bk.avail = r || { state: 'ask' }; update();
+  }).withFailureHandler(function () {
+    if (my !== bk.seq) return;
+    bk.checking = false; bk.avail = { state: 'ask' }; update();
+  }).quickCheck({ sessionId: state.sessionId, date: bk.date, people: bk.people, seat: bk.seat });
+}
+function renderBook(log, t) {
+  var b = bookText();
+  var B = CFG.booking || {};
+  var wrap = el('div', 'form');
+  var head = el('div', 'bk-head');
+  var back = el('button', 'bk-back', b.back); back.type = 'button';
+  back.onclick = function () { state.view = 'chat'; render(); };
+  head.appendChild(back);
+  head.appendChild(el('p', 'bk-title', b.title));
+  head.appendChild(el('p', 'bk-lead', b.lead));
+  wrap.appendChild(head);
+
+  if (bk.result) {
+    var r = bk.result;
+    var card = el('div', 'receipt');
+    card.appendChild(el('p', 'receipt-label', r.waitlist ? b.doneWait : b.doneTitle));
+    card.appendChild(el('p', 'receipt-id', r.receiptId));
+    card.appendChild(el('p', 'receipt-note', r.waitlist ? b.doneWaitNote : b.doneNote));
+    wrap.appendChild(card);
+    var c = (B.courses || []).filter(function (x) { return x.id === bk.course; })[0];
+    var lines = [formatDate(bk.date) + ' ' + (r.time || ''), t.people + '：' + bk.people + ' ' + t.peopleUnit, (c ? c.name : '')];
+    if (r.estimatedTotal != null) lines.push(b.total + '：' + Number(r.estimatedTotal).toLocaleString() + (state.lang === 'ja' ? '円' : ' JPY'));
+    wrap.appendChild(el('p', 'bk-sum', lines.join('\n')));
+    var ch = el('button', 'ask', b.chat); ch.type = 'button';
+    ch.onclick = function () { state.view = 'chat'; render(); };
+    wrap.appendChild(ch);
+    log.appendChild(wrap);
+    return;
+  }
+
+  // 1. 日付・人数・席
+  wrap.appendChild(el('p', 'bk-step', b.s1));
+  var fd = el('div', 'field');
+  fd.appendChild(el('p', 'field-label', t.date));
+  var di = document.createElement('input'); di.type = 'date'; di.id = 'bk-date'; di.className = 'text-in';
+  if (B.earliest) di.min = B.earliest;
+  di.value = bk.date;
+  fd.appendChild(di); wrap.appendChild(fd);
+  var fp = el('div', 'field');
+  fp.appendChild(el('p', 'field-label', t.people));
+  var st = el('div', 'stepper');
+  var minus = el('button', '', '−'); minus.type = 'button'; minus.setAttribute('aria-label', '-1');
+  var pv = el('span', 'pair-n', String(bk.people));
+  var plus = el('button', '', '+'); plus.type = 'button'; plus.setAttribute('aria-label', '+1');
+  st.appendChild(minus); st.appendChild(pv); st.appendChild(plus); st.appendChild(el('span', '', t.peopleUnit));
+  fp.appendChild(st); wrap.appendChild(fp);
+  var fs = el('div', 'field');
+  fs.appendChild(el('p', 'field-label', b.seat));
+  var seats = el('div', 'chips');
+  b.seats.forEach(function (o) {
+    var c = el('button', 'chip' + (bk.seat === o[0] ? ' on' : ''), o[1]); c.type = 'button';
+    c.setAttribute('aria-pressed', bk.seat === o[0] ? 'true' : 'false');
+    c.onclick = function () { bk.seat = o[0]; seats.querySelectorAll('.chip').forEach(function (x, i) { var on = b.seats[i][0] === bk.seat; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); }); bookCheck(update); };
+    seats.appendChild(c);
+  });
+  fs.appendChild(seats); wrap.appendChild(fs);
+  var av = el('p', 'bk-avail', ''); av.setAttribute('aria-live', 'polite');
+  wrap.appendChild(av);
+
+  // 2. コースとペアリング
+  wrap.appendChild(el('p', 'bk-step', b.s2));
+  var list = el('div', 'course-list');
+  (B.courses || []).forEach(function (c) {
+    var cb = el('button', 'course' + (bk.course === c.id ? ' on' : '')); cb.type = 'button';
+    cb.setAttribute('aria-pressed', bk.course === c.id ? 'true' : 'false');
+    var top = el('span', 'course-top');
+    top.appendChild(el('span', 'course-name', c.name));
+    if (c.price) top.appendChild(el('span', 'course-price', c.price));
+    cb.appendChild(top);
+    if (c.description) cb.appendChild(el('span', 'course-desc', c.description));
+    cb.onclick = function () { bk.course = c.id; list.querySelectorAll('.course').forEach(function (x) { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); }); cb.classList.add('on'); cb.setAttribute('aria-pressed', 'true'); update(); };
+    list.appendChild(cb);
+  });
+  wrap.appendChild(list);
+  var left = el('p', 'pair-left', '');
+  var pairNums = {};
+  if ((B.pairings || []).length) {
+    wrap.appendChild(el('p', 'field-label', t.kPair));
+    var pl = el('div', 'pair-list');
+    (B.pairings || []).forEach(function (p) {
+      bk.pairs[p.id] = bk.pairs[p.id] || 0;
+      var row = el('div', 'pair');
+      row.appendChild(el('span', 'pair-name', p.name + (p.price ? '　' + p.price : '')));
+      var s2 = el('div', 'stepper');
+      var m2 = el('button', '', '−'); m2.type = 'button';
+      var v2 = el('span', 'pair-n', String(bk.pairs[p.id]));
+      var p2 = el('button', '', '+'); p2.type = 'button';
+      pairNums[p.id] = v2;
+      m2.onclick = function () { if (bk.pairs[p.id] > 0) { bk.pairs[p.id]--; update(); } };
+      p2.onclick = function () { if (pairTotal() < bk.people) { bk.pairs[p.id]++; update(); } };
+      s2.appendChild(m2); s2.appendChild(v2); s2.appendChild(p2);
+      row.appendChild(s2); pl.appendChild(row);
+    });
+    wrap.appendChild(pl); wrap.appendChild(left);
+  }
+  function pairTotal() { return Object.keys(bk.pairs).reduce(function (a, k) { return a + bk.pairs[k]; }, 0); }
+
+  // 3. ご連絡先
+  wrap.appendChild(el('p', 'bk-step', b.s3));
+  var field = function (label, type, key, ac, area) {
+    var w = el('div', 'field');
+    var l = el('label', 'field-label', label); l.setAttribute('for', 'bk-' + key);
+    var i = document.createElement(area ? 'textarea' : 'input');
+    if (!area) i.type = type; else { i.rows = 2; i.maxLength = 300; }
+    i.id = 'bk-' + key; i.className = 'text-in'; if (ac) i.autocomplete = ac;
+    i.value = bk[key];
+    i.oninput = function () { bk[key] = i.value; update(); };
+    w.appendChild(l); w.appendChild(i); wrap.appendChild(w);
+  };
+  field(t.cName, 'text', 'name', 'name');
+  field(t.cEmail, 'email', 'email', 'email');
+  field(t.cPhone, 'tel', 'phone', 'tel');
+  field(b.note, '', 'note', '', true);
+  if (B.policy) {
+    var box = el('div', 'policy');
+    box.appendChild(el('p', 'field-label', t.cPolicyTitle));
+    box.appendChild(el('p', 'policy-text', B.policy));
+    wrap.appendChild(box);
+  }
+  var check = function (key, label) {
+    var w = el('label', 'agree');
+    var c = document.createElement('input'); c.type = 'checkbox'; c.checked = bk[key];
+    c.onchange = function () { bk[key] = c.checked; update(); };
+    w.appendChild(c); w.appendChild(el('span', '', label)); wrap.appendChild(w);
+  };
+  if (B.policy) check('policy', t.cPolicyAgree); else bk.policy = true;
+  check('agree', t.cAgree);
+  wrap.appendChild(el('p', 'privacy', t.privacyBody));
+  var errP = el('p', 'bk-err', '');
+  wrap.appendChild(errP);
+  var go = el('button', 'send-form', b.submit); go.type = 'button';
+  wrap.appendChild(go);
+  log.appendChild(wrap);
+
+  function availState() { return bk.avail ? bk.avail.state : ''; }
+  function update() {
+    pv.textContent = bk.people;
+    Object.keys(pairNums).forEach(function (k) { pairNums[k].textContent = bk.pairs[k]; });
+    left.textContent = t.kLeft.replace('{n}', Math.max(0, bk.people - pairTotal()));
+    var s = availState();
+    av.className = 'bk-avail' + (s === 'open' ? ' ok' : (s === 'full' || s === 'closed' || s === 'group') ? ' ng' : '');
+    av.textContent = !bk.date ? b.pick : bk.checking ? b.checking
+      : s === 'open' ? b.open.replace('{d}', formatDate(bk.date)).replace('{t}', bk.avail.time || '19:00')
+      : s === 'full' ? b.full : s === 'closed' ? (bk.avail.note || b.closed) : s === 'group' ? b.group
+      : s === 'busy' ? b.errBusy : b.ask.replace('{d}', formatDate(bk.date));
+    go.textContent = bk.sending ? b.sending : (s === 'full' ? b.submitWait : b.submit);
+    var ok = bk.date && !bk.checking && (s === 'open' || s === 'full' || s === 'ask') && bk.course &&
+      bk.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(bk.email.trim()) && /^[0-9+\-() ]{6,20}$/.test(bk.phone.trim()) && bk.policy && bk.agree;
+    go.disabled = !ok || bk.sending;
+    errP.textContent = bk.err;
+  }
+  di.onchange = di.oninput = function () { if (di.value === bk.date) return; bk.date = di.value; bookCheck(update); };
+  var setP = function (n) {
+    bk.people = Math.max(1, Math.min(50, n));
+    var over = pairTotal() - bk.people;
+    Object.keys(bk.pairs).forEach(function (k) { while (over > 0 && bk.pairs[k] > 0) { bk.pairs[k]--; over--; } });
+    bookCheck(update);
+  };
+  minus.onclick = function () { setP(bk.people - 1); };
+  plus.onclick = function () { setP(bk.people + 1); };
+  go.onclick = function () {
+    if (go.disabled) return;
+    bk.sending = true; bk.err = ''; update();
+    var payload = { sessionId: state.sessionId, lang: state.lang, website: document.getElementById('hp').value,
+      date: bk.date, people: bk.people, seat: bk.seat, course: bk.course,
+      pairings: Object.keys(bk.pairs).filter(function (k) { return bk.pairs[k] > 0; }).map(function (k) { return { id: k, count: bk.pairs[k] }; }),
+      name: bk.name.trim(), email: bk.email.trim(), phone: bk.phone.trim(), note: bk.note.trim(),
+      policy: bk.policy, agree: bk.agree, waitlist: availState() === 'full' };
+    google.script.run.withSuccessHandler(function (r) {
+      bk.sending = false;
+      if (r && r.ok) { bk.result = r; render(); window.scrollTo(0, 0); return; }
+      var e = r && r.error;
+      if (e === 'full') { bk.avail = { state: 'full' }; bk.err = b.errFull; }
+      else if (e === 'busy') bk.err = b.errBusy;
+      else if (e === 'invalid' || e === 'course') bk.err = b.errCheck;
+      else if (e === 'closed') { bk.avail = { state: 'closed', note: r.message }; bk.err = ''; }
+      else bk.err = b.errFail + ' ' + ((r && r.email) || '');
+      update();
+    }).withFailureHandler(function () {
+      bk.sending = false; bk.err = b.errFail; update();
+    }).quickBook(payload);
+  };
+  update();
+}
+
+/* ===== 団体・貸切／ツアーの相談フォーム（AIを使わない） ===== */
+var IQ_TEXT = {
+  ja: { group: '団体・貸切のご相談', tour: '食文化ツアーのご相談', leadG: '内容を送っていただくと、スタッフが会場の空き状況やプランを確認してご連絡します。', leadT: '蔵見学・発酵体験・お食事・宿泊など、長岡の食をめぐる旅をスタッフがご提案します。',
+    date: '希望日', dateNote: '日程の幅・候補（任意）', dateHint: '例：11月中の土曜、2月上旬', slot: '時間帯', slots: [['lunch', '昼'], ['dinner', '夜'], ['undecided', '未定']],
+    style: 'ご利用の形式', styles: [['seated', '着席'], ['standing', '立食'], ['buyout', '全館貸切'], ['undecided', '未定・相談したい']],
+    drink: '飲み放題', drinks: [['none', 'なし'], ['standard', '飲み放題'], ['premium', 'プレミアム（地酒）'], ['undecided', '未定']],
+    interest: 'ご希望の内容（複数可）', interests: [['dining', '食事'], ['brewery', '蔵見学'], ['fermentation', '発酵体験'], ['stay', '宿泊'], ['undecided', '未定']],
+    country: '国・地域（任意）', budget: 'ご予算（任意）', budgetHint: '例：お一人様6,000円くらい', note: 'ご要望・目的など（任意）', info: 'ご案内',
+    submit: 'この内容で相談する', sending: '送信しています…', done: 'ご相談を承りました', doneNote: 'スタッフが内容を確認し、メールまたはお電話でご連絡します。控えのメールをお送りしました。',
+    errCheck: '必須の項目をご確認ください。', errBusy: '混み合っています。少し待ってからもう一度お試しください。', errFail: '送信できませんでした。お手数ですがメールでお問い合わせください：' },
+  en: { group: 'Groups & private hire', tour: 'Food culture tours', leadG: 'Send us your request and our staff will check venue availability and plans, then get back to you.', leadT: 'Brewery visits, fermentation workshops, dining and stays — our staff will suggest a food journey around Nagaoka.',
+    date: 'Preferred date', dateNote: 'Flexible dates (optional)', dateHint: 'e.g. any Saturday in November', slot: 'Time', slots: [['lunch', 'Lunch'], ['dinner', 'Dinner'], ['undecided', 'Not sure']],
+    style: 'Style', styles: [['seated', 'Seated'], ['standing', 'Standing'], ['buyout', 'Whole venue'], ['undecided', 'Not sure yet']],
+    drink: 'Free-flow drinks', drinks: [['none', 'None'], ['standard', 'Standard'], ['premium', 'Premium (local sake)'], ['undecided', 'Not sure']],
+    interest: 'Interests (choose any)', interests: [['dining', 'Dining'], ['brewery', 'Brewery visit'], ['fermentation', 'Fermentation workshop'], ['stay', 'Stay'], ['undecided', 'Not sure yet']],
+    country: 'Country / region (optional)', budget: 'Budget (optional)', budgetHint: 'e.g. about 6,000 JPY per person', note: 'Requests or purpose (optional)', info: 'Information',
+    submit: 'Send request', sending: 'Sending…', done: 'Request received', doneNote: 'Our staff will review your request and contact you by email or phone. A copy has been sent to your email.',
+    errCheck: 'Please check the required fields.', errBusy: 'We are busy right now. Please try again shortly.', errFail: 'We could not send your request. Please email us:' },
+  fr: { group: 'Groupes et privatisation', tour: 'Circuits gastronomiques', leadG: 'Envoyez votre demande ; notre équipe vérifiera les disponibilités et vous recontactera.', leadT: 'Brasseries, ateliers de fermentation, repas, hébergement : nous vous proposerons un parcours à Nagaoka.',
+    date: 'Date souhaitée', dateNote: 'Dates flexibles (facultatif)', dateHint: 'ex. un samedi de novembre', slot: 'Horaire', slots: [['lunch', 'Midi'], ['dinner', 'Soir'], ['undecided', 'À définir']],
+    style: 'Formule', styles: [['seated', 'Assis'], ['standing', 'Debout'], ['buyout', 'Privatisation totale'], ['undecided', 'À définir']],
+    drink: 'Boissons à volonté', drinks: [['none', 'Non'], ['standard', 'Standard'], ['premium', 'Premium (saké local)'], ['undecided', 'À définir']],
+    interest: 'Intérêts (plusieurs choix)', interests: [['dining', 'Repas'], ['brewery', 'Brasserie'], ['fermentation', 'Fermentation'], ['stay', 'Hébergement'], ['undecided', 'À définir']],
+    country: 'Pays / région (facultatif)', budget: 'Budget (facultatif)', budgetHint: 'ex. environ 6 000 JPY par personne', note: 'Demandes ou objet (facultatif)', info: 'Informations',
+    submit: 'Envoyer la demande', sending: 'Envoi…', done: 'Demande reçue', doneNote: 'Notre équipe vous recontactera par e-mail ou téléphone.',
+    errCheck: 'Veuillez vérifier les champs obligatoires.', errBusy: 'Veuillez réessayer dans un instant.', errFail: 'Envoi impossible. Écrivez-nous :' },
+  ko: { group: '단체·대관 상담', tour: '음식 문화 투어 상담', leadG: '내용을 보내 주시면 직원이 공간과 플랜을 확인해 연락드립니다.', leadT: '양조장 견학, 발효 체험, 식사, 숙박 등 나가오카 음식 여행을 제안해 드립니다.',
+    date: '희망일', dateNote: '일정 범위·후보 (선택)', dateHint: '예: 11월 중 토요일', slot: '시간대', slots: [['lunch', '점심'], ['dinner', '저녁'], ['undecided', '미정']],
+    style: '이용 형식', styles: [['seated', '착석'], ['standing', '스탠딩'], ['buyout', '전관 대관'], ['undecided', '미정']],
+    drink: '음료 무제한', drinks: [['none', '없음'], ['standard', '기본'], ['premium', '프리미엄(지역 사케)'], ['undecided', '미정']],
+    interest: '희망 내용 (복수 선택)', interests: [['dining', '식사'], ['brewery', '양조장 견학'], ['fermentation', '발효 체험'], ['stay', '숙박'], ['undecided', '미정']],
+    country: '국가·지역 (선택)', budget: '예산 (선택)', budgetHint: '예: 1인 6,000엔 정도', note: '요청 사항·목적 (선택)', info: '안내',
+    submit: '이 내용으로 상담하기', sending: '보내는 중…', done: '상담을 접수했습니다', doneNote: '직원이 확인 후 메일 또는 전화로 연락드립니다.',
+    errCheck: '필수 항목을 확인해 주세요.', errBusy: '잠시 후 다시 시도해 주세요.', errFail: '보내지 못했습니다. 메일로 문의해 주세요:' },
+  zh: { group: '团体・包场咨询', tour: '饮食文化之旅咨询', leadG: '提交后，工作人员会确认场地与方案并与您联系。', leadT: '酿造厂参观、发酵体验、用餐、住宿等，我们为您规划长冈美食之旅。',
+    date: '希望日期', dateNote: '日期范围・候选（选填）', dateHint: '例：11月的周六', slot: '时段', slots: [['lunch', '午餐'], ['dinner', '晚餐'], ['undecided', '未定']],
+    style: '形式', styles: [['seated', '入座'], ['standing', '站立'], ['buyout', '全场包场'], ['undecided', '未定']],
+    drink: '畅饮', drinks: [['none', '不需要'], ['standard', '标准'], ['premium', '高级（本地清酒）'], ['undecided', '未定']],
+    interest: '希望内容（可多选）', interests: [['dining', '用餐'], ['brewery', '酿造厂参观'], ['fermentation', '发酵体验'], ['stay', '住宿'], ['undecided', '未定']],
+    country: '国家・地区（选填）', budget: '预算（选填）', budgetHint: '例：每人约6,000日元', note: '要求・目的（选填）', info: '说明',
+    submit: '提交咨询', sending: '正在发送…', done: '已收到您的咨询', doneNote: '工作人员确认后将通过邮件或电话与您联系。',
+    errCheck: '请检查必填项目。', errBusy: '请稍后再试。', errFail: '发送失败，请发邮件联系：' }
+};
+var iq = null;
+function iqText() { return IQ_TEXT[state.lang] || IQ_TEXT.en; }
+function openInquiry(cat) {
+  if (!iq || iq.result || iq.cat !== cat) iq = { cat: cat, date: '', dateNote: '', people: cat === 'group' ? 20 : 4, slot: '', style: '', drink: '', interests: [], country: '', budget: '', name: '', email: '', phone: '', note: '', agree: false, sending: false, err: '', result: null };
+  state.view = 'inquiry';
+  render();
+  window.scrollTo(0, 0);
+}
+function renderInquiry(log, t) {
+  var b = iqText(), B = CFG.booking || {}, g = iq.cat === 'group';
+  var wrap = el('div', 'form');
+  var head = el('div', 'bk-head');
+  var back = el('button', 'bk-back', bookText().back); back.type = 'button';
+  back.onclick = function () { state.view = 'chat'; render(); };
+  head.appendChild(back);
+  head.appendChild(el('p', 'bk-title', g ? b.group : b.tour));
+  head.appendChild(el('p', 'bk-lead', g ? b.leadG : b.leadT));
+  wrap.appendChild(head);
+  if (iq.result) {
+    var card = el('div', 'receipt');
+    card.appendChild(el('p', 'receipt-label', b.done));
+    card.appendChild(el('p', 'receipt-id', iq.result.receiptId));
+    card.appendChild(el('p', 'receipt-note', b.doneNote));
+    wrap.appendChild(card);
+    var ch = el('button', 'ask', bookText().chat); ch.type = 'button';
+    ch.onclick = function () { state.view = 'chat'; render(); };
+    wrap.appendChild(ch);
+    log.appendChild(wrap);
+    return;
+  }
+  if (g && B.groupNote && state.lang === 'ja') {
+    var box = el('div', 'policy');
+    box.appendChild(el('p', 'field-label', b.info));
+    box.appendChild(el('p', 'policy-text', B.groupNote));
+    wrap.appendChild(box);
+  }
+  // 日付
+  var fd = el('div', 'field');
+  fd.appendChild(el('p', 'field-label', b.date));
+  var di = document.createElement('input'); di.type = 'date'; di.className = 'text-in';
+  if (B.earliest) di.min = B.earliest;
+  di.value = iq.date;
+  di.onchange = di.oninput = function () { iq.date = di.value; update(); };
+  fd.appendChild(di); wrap.appendChild(fd);
+  var text = function (label, key, type, ac, area, hint) {
+    var w = el('div', 'field');
+    var l = el('label', 'field-label', label); l.setAttribute('for', 'iq-' + key);
+    var i = document.createElement(area ? 'textarea' : 'input');
+    if (!area) i.type = type || 'text'; else { i.rows = 3; i.maxLength = 500; }
+    i.id = 'iq-' + key; i.className = 'text-in'; if (ac) i.autocomplete = ac; if (hint) i.placeholder = hint;
+    i.value = iq[key];
+    i.oninput = function () { iq[key] = i.value; update(); };
+    w.appendChild(l); w.appendChild(i); wrap.appendChild(w);
+  };
+  text(b.dateNote, 'dateNote', 'text', '', false, b.dateHint);
+  // 人数
+  var fp = el('div', 'field');
+  fp.appendChild(el('p', 'field-label', t.people));
+  var st = el('div', 'stepper');
+  var minus = el('button', '', '−'); minus.type = 'button';
+  var pi = document.createElement('input'); pi.type = 'number'; pi.min = 1; pi.max = 300; pi.inputMode = 'numeric'; pi.value = iq.people;
+  var plus = el('button', '', '+'); plus.type = 'button';
+  var setP = function (n) { iq.people = Math.max(1, Math.min(300, Math.round(Number(n) || 1))); pi.value = iq.people; update(); };
+  minus.onclick = function () { setP(iq.people - 1); };
+  plus.onclick = function () { setP(iq.people + 1); };
+  pi.oninput = function () { iq.people = Number(pi.value) || 0; update(); };
+  pi.onblur = function () { setP(pi.value); };
+  st.appendChild(minus); st.appendChild(pi); st.appendChild(plus); st.appendChild(el('span', '', t.peopleUnit));
+  fp.appendChild(st); wrap.appendChild(fp);
+  // 選択肢
+  var pickOne = function (label, key, opts) {
+    var w = el('div', 'field');
+    w.appendChild(el('p', 'field-label', label));
+    var c = el('div', 'chips');
+    opts.forEach(function (o) {
+      var x = el('button', 'chip' + (iq[key] === o[0] ? ' on' : ''), o[1]); x.type = 'button';
+      x.setAttribute('aria-pressed', iq[key] === o[0] ? 'true' : 'false');
+      x.onclick = function () { iq[key] = o[0]; c.querySelectorAll('.chip').forEach(function (y, i) { var on = opts[i][0] === iq[key]; y.classList.toggle('on', on); y.setAttribute('aria-pressed', on ? 'true' : 'false'); }); update(); };
+      c.appendChild(x);
+    });
+    w.appendChild(c); wrap.appendChild(w);
+  };
+  if (g) {
+    pickOne(b.slot, 'slot', b.slots);
+    pickOne(b.style, 'style', b.styles);
+    pickOne(b.drink, 'drink', b.drinks);
+  } else {
+    var w = el('div', 'field');
+    w.appendChild(el('p', 'field-label', b.interest));
+    var c = el('div', 'chips');
+    var tops = (B.tourOptions || []).map(function (x) { return [x.ja, state.lang === 'ja' ? x.ja : (x.en || x.ja)]; });
+    (tops.length ? tops : b.interests).forEach(function (o) {
+      var on0 = iq.interests.indexOf(o[0]) >= 0;
+      var x = el('button', 'chip' + (on0 ? ' on' : ''), o[1]); x.type = 'button';
+      x.setAttribute('aria-pressed', on0 ? 'true' : 'false');
+      x.onclick = function () {
+        var i = iq.interests.indexOf(o[0]);
+        if (i >= 0) iq.interests.splice(i, 1); else iq.interests.push(o[0]);
+        var on = iq.interests.indexOf(o[0]) >= 0;
+        x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false');
+        update();
+      };
+      c.appendChild(x);
+    });
+    w.appendChild(c); wrap.appendChild(w);
+    text(b.country, 'country', 'text', 'country-name');
+  }
+  text(b.budget, 'budget', 'text', '', false, b.budgetHint);
+  text(b.note, 'note', '', '', true);
+  // 連絡先
+  wrap.appendChild(el('p', 'bk-step', bookText().s3));
+  text(t.cName, 'name', 'text', 'name');
+  text(t.cEmail, 'email', 'email', 'email');
+  text(t.cPhone, 'phone', 'tel', 'tel');
+  var aw = el('label', 'agree');
+  var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = iq.agree;
+  cb.onchange = function () { iq.agree = cb.checked; update(); };
+  aw.appendChild(cb); aw.appendChild(el('span', '', t.cAgree)); wrap.appendChild(aw);
+  wrap.appendChild(el('p', 'privacy', t.privacyBody));
+  var errP = el('p', 'bk-err', '');
+  wrap.appendChild(errP);
+  var go = el('button', 'send-form', b.submit); go.type = 'button';
+  wrap.appendChild(go);
+  log.appendChild(wrap);
+  function update() {
+    var ok = (iq.date || iq.dateNote.trim()) && iq.people >= 1 && iq.name.trim() &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(iq.email.trim()) && /^[0-9+\-() ]{6,20}$/.test(iq.phone.trim()) && iq.agree;
+    go.disabled = !ok || iq.sending;
+    go.textContent = iq.sending ? b.sending : b.submit;
+    errP.textContent = iq.err;
+  }
+  go.onclick = function () {
+    if (go.disabled) return;
+    iq.sending = true; iq.err = ''; update();
+    var payload = { sessionId: state.sessionId, lang: state.lang, website: document.getElementById('hp').value, category: iq.cat,
+      date: iq.date, dateNote: iq.dateNote.trim(), people: iq.people, slot: iq.slot, style: iq.style, drink: iq.drink, interests: iq.interests,
+      country: iq.country.trim(), budget: iq.budget.trim(), note: iq.note.trim(), name: iq.name.trim(), email: iq.email.trim(), phone: iq.phone.trim(), agree: iq.agree };
+    google.script.run.withSuccessHandler(function (r) {
+      iq.sending = false;
+      if (r && r.ok) { iq.result = r; render(); window.scrollTo(0, 0); return; }
+      var e = r && r.error;
+      iq.err = e === 'busy' ? b.errBusy : e === 'invalid' ? b.errCheck : b.errFail + ' ' + ((r && r.email) || '');
+      update();
+    }).withFailureHandler(function () { iq.sending = false; iq.err = b.errFail; update(); }).quickInquiry(payload);
+  };
+  update();
+}
+
+/* ===== オープニングレセプション（招待リンクから開いた人だけ） ===== */
+var rc = null;
+function openReception() {
+  if (!rc) rc = { attend: 'yes', name: '', company: '', email: '', phone: '', people: 1, companions: '', message: '', agree: false, sending: false, err: '', result: null };
+  state.view = 'reception';
+  render();
+  window.scrollTo(0, 0);
+}
+function renderReception(log, t) {
+  var R = CFG.reception || {};
+  var wrap = el('div', 'form');
+  var head = el('div', 'bk-head');
+  var back = el('button', 'bk-back', '館内のお店・ご予約を見る'); back.type = 'button';
+  back.onclick = function () { state.view = 'chat'; render(); };
+  head.appendChild(back);
+  head.appendChild(el('p', 'bk-title', R.title || 'オープニングレセプション'));
+  head.appendChild(el('p', 'bk-lead', 'このページは、ご招待した方だけにお送りしています。'));
+  wrap.appendChild(head);
+  if (R.info) {
+    var box = el('div', 'policy');
+    box.appendChild(el('p', 'field-label', 'ご案内'));
+    box.appendChild(el('p', 'policy-text', R.info));
+    wrap.appendChild(box);
+  }
+  if (rc.result) {
+    var card = el('div', 'receipt');
+    card.appendChild(el('p', 'receipt-label', rc.result.attend === '出席' ? 'ご出席を承りました' : 'ご返信ありがとうございます'));
+    card.appendChild(el('p', 'receipt-id', rc.result.receiptId));
+    card.appendChild(el('p', 'receipt-note', rc.result.attend === '出席'
+      ? rc.result.people + '名様でお待ちしております。会費 ' + Number(rc.result.fee).toLocaleString() + '円は当日受付にて現金でお願いいたします。控えのメールをお送りしました。'
+      : '今回はご欠席と承りました。またのご来館を心よりお待ちしております。'));
+    wrap.appendChild(card);
+    log.appendChild(wrap);
+    return;
+  }
+  if (!R.open) {
+    wrap.appendChild(el('p', 'bk-avail ng', 'ご返信の受付は締め切りました（' + (R.deadlineLabel || '') + '）。ご連絡はお電話またはメールでお願いいたします。'));
+    log.appendChild(wrap);
+    return;
+  }
+  wrap.appendChild(el('p', 'bk-step', 'ご出欠'));
+  var ch = el('div', 'chips');
+  [['yes', '出席'], ['no', '欠席']].forEach(function (o) {
+    var b = el('button', 'chip' + (rc.attend === o[0] ? ' on' : ''), o[1]); b.type = 'button';
+    b.setAttribute('aria-pressed', rc.attend === o[0] ? 'true' : 'false');
+    b.onclick = function () { rc.attend = o[0]; render(); };
+    ch.appendChild(b);
+  });
+  wrap.appendChild(ch);
+  var text = function (label, key, type, ac, area, hint) {
+    var w = el('div', 'field');
+    var l = el('label', 'field-label', label); l.setAttribute('for', 'rc-' + key);
+    var i = document.createElement(area ? 'textarea' : 'input');
+    if (!area) i.type = type || 'text'; else { i.rows = 2; i.maxLength = 500; }
+    i.id = 'rc-' + key; i.className = 'text-in'; if (ac) i.autocomplete = ac; if (hint) i.placeholder = hint;
+    i.value = rc[key];
+    i.oninput = function () { rc[key] = i.value; update(); };
+    w.appendChild(l); w.appendChild(i); wrap.appendChild(w);
+  };
+  text('お名前', 'name', 'text', 'name');
+  text('会社名・ご所属（任意）', 'company', 'text', 'organization');
+  text('メールアドレス', 'email', 'email', 'email');
+  text('電話番号', 'phone', 'tel', 'tel');
+  if (rc.attend === 'yes') {
+    var fp = el('div', 'field');
+    fp.appendChild(el('p', 'field-label', 'ご出席の人数（ご本人を含む）'));
+    var st = el('div', 'stepper');
+    var minus = el('button', '', '−'); minus.type = 'button';
+    var pv = el('span', 'pair-n', String(rc.people));
+    var plus = el('button', '', '+'); plus.type = 'button';
+    minus.onclick = function () { if (rc.people > 1) { rc.people--; render(); } };
+    plus.onclick = function () { if (rc.people < 20) { rc.people++; render(); } };
+    st.appendChild(minus); st.appendChild(pv); st.appendChild(plus); st.appendChild(el('span', '', '名'));
+    fp.appendChild(st); wrap.appendChild(fp);
+    if (rc.people > 1) text('ご同伴の方のお名前', 'companions', 'text', '', false, '例：山田花子、佐藤一郎');
+  }
+  text('ひとことメッセージ（任意）', 'message', '', '', true);
+  var aw = el('label', 'agree');
+  var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = rc.agree;
+  cb.onchange = function () { rc.agree = cb.checked; update(); };
+  aw.appendChild(cb); aw.appendChild(el('span', '', 'ご連絡先は、このレセプションのご案内のためだけに SUZU GROUP が利用することに同意します'));
+  wrap.appendChild(aw);
+  if (R.deadlineLabel) wrap.appendChild(el('p', 'pair-left', 'ご返信の締め切り：' + R.deadlineLabel));
+  var errP = el('p', 'bk-err', '');
+  wrap.appendChild(errP);
+  var go = el('button', 'send-form', '返信する'); go.type = 'button';
+  wrap.appendChild(go);
+  log.appendChild(wrap);
+  function update() {
+    var ok = rc.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(rc.email.trim()) && /^[0-9+\-() ]{6,20}$/.test(rc.phone.trim()) && rc.agree;
+    go.disabled = !ok || rc.sending;
+    go.textContent = rc.sending ? '送信しています…' : (rc.attend === 'yes' ? '出席で返信する' : '欠席で返信する');
+    errP.textContent = rc.err;
+  }
+  go.onclick = function () {
+    if (go.disabled) return;
+    rc.sending = true; rc.err = ''; update();
+    var payload = { sessionId: state.sessionId, code: R.code, website: document.getElementById('hp').value, attend: rc.attend,
+      name: rc.name.trim(), company: rc.company.trim(), email: rc.email.trim(), phone: rc.phone.trim(), people: rc.people,
+      companions: rc.companions.trim(), message: rc.message.trim(), agree: rc.agree };
+    google.script.run.withSuccessHandler(function (r) {
+      rc.sending = false;
+      if (r && r.ok) { rc.result = r; render(); window.scrollTo(0, 0); return; }
+      var e = r && r.error;
+      rc.err = e === 'closed' ? 'ご返信の受付は締め切りました。' : e === 'busy' ? '混み合っています。少し待ってからもう一度お試しください。' : e === 'invalid' ? '入力内容をご確認ください。' : '送信できませんでした。お手数ですがお電話かメールでご連絡ください。';
+      update();
+    }).withFailureHandler(function () { rc.sending = false; rc.err = '送信できませんでした。もう一度お試しください。'; update(); }).receptionReply(payload);
+  };
+  update();
+}
+
+function updateSend() {
+  document.getElementById('send').disabled = state.pending || !document.getElementById('input').value.trim();
+}
+
+function send(text, shortcut) {
+  var content = String(text || '').trim();
+  if (!content || state.pending) return;
+  state.view = 'chat';
+  var t = TEXT[state.lang];
+  state.messages.push({ role: 'user', content: content });
+  state.pending = true;
+  state.dateValue = '';
+  document.getElementById('input').value = '';
+  save();
+  render();
+  var payload = {
+    sessionId: state.sessionId,
+    locale: state.lang,
+    shortcut: shortcut || '',
+    website: document.getElementById('hp').value,
+    messages: state.messages.map(function (m) { return { role: m.role, content: m.content }; })
+  };
+  var done = function (data) {
+    state.pending = false;
+    state.messages.push({ role: 'assistant', content: (data && data.reply) || t.networkError, ui: (data && data.ui) || [] });
+    save();
+    render();
+  };
+  google.script.run.withSuccessHandler(done).withFailureHandler(function () { done(null); }).chat(payload);
+}
+
+(function init() {
+  load();
+  if (CFG.logo) {
+    var lg = document.getElementById('logo');
+    lg.src = CFG.logo;
+    lg.onload = function () { lg.hidden = false; document.getElementById('brandText').hidden = true; };
+  }
+  if (CFG.catchImg) {
+    var cc = document.getElementById('catch');
+    cc.src = CFG.catchImg;
+    cc.onload = function () { cc.hidden = false; document.getElementById('tagline').hidden = true; };
+  }
+  var sel = document.getElementById('lang');
+  Object.keys(TEXT).forEach(function (k) {
+    var o = document.createElement('option');
+    o.value = k;
+    o.textContent = TEXT[k].label;
+    sel.appendChild(o);
+  });
+  sel.onchange = function () { state.lang = sel.value; save(); render(); };
+  if (CFG.reception) { rc = null; openReception(); }
+  var input = document.getElementById('input');
+  input.oninput = updateSend;
+  input.onkeydown = function (e) {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); send(input.value); }
+  };
+  document.getElementById('composer').onsubmit = function (e) { e.preventDefault(); send(input.value); };
+  document.getElementById('restartLink').onclick = function () { state.messages = []; state.sessionId = newId(); state.dateValue = ''; state.style = ''; state.view = 'chat'; save(); render(); window.scrollTo(0, 0); };
+  document.getElementById('privacyLink').onclick = function () {
+    var p = document.getElementById('privacy');
+    p.hidden = !p.hidden;
+  };
+  render();
+})();
+</script>
+
+<script>
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbzVxSEMjJ_gxR8k7lA9lPN_RKSUw_J6s_wp9kwA4wr9DRJ9LfcMSzFbe4eQUE-wY_SprQ/exec";
+  // google.script.run の代わり：Apps Script の API に POST する（ログイン情報は送らない）
+  function call(fn, arg, ok, ng) {
+    fetch(API, { method: "POST", credentials: "omit", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: fn, arg: arg }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j && j.ok) { ok && ok(j.result); } else { ng && ng(new Error((j && j.error) || "error")); } })
+      .catch(function (e) { ng && ng(e); });
+  }
+  function runner(ok, ng) {
+    return new Proxy({}, {
+      get: function (_, k) {
+        if (k === "withSuccessHandler") return function (f) { return runner(f, ng); };
+        if (k === "withFailureHandler") return function (f) { return runner(ok, f); };
+        return function (arg) { call(String(k), arg, ok, ng); };
+      }
+    });
+  }
+  window.google = { script: { run: runner(null, null) } };
+
+  function start(cfg) {
+    document.getElementById("cfg").textContent = JSON.stringify(cfg || {});
+    var s = document.createElement("script");
+    s.text = document.getElementById("app").textContent;
+    document.body.appendChild(s);
+  }
+  var inv = new URLSearchParams(location.search).get("invite");
+  var from = new URLSearchParams(location.search).get("from");
+  var url = API + "?api=config" + (inv ? "&invite=" + encodeURIComponent(inv) : "") + (from ? "&from=" + encodeURIComponent(from) : "");
+  var done = false;
+  var t = setTimeout(function () { if (!done) { done = true; start({}); } }, 12000);
+  fetch(url, { credentials: "omit", redirect: "follow" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (!done) { done = true; clearTimeout(t); start(j && j.cfg); } })
+    .catch(function () { if (!done) { done = true; clearTimeout(t); start({}); } });
+})();
+</script>
+</body>
+</html>
