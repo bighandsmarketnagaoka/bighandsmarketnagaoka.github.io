@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>取引先登録 | BIG HANDS MARKET</title>
+</head>
+<body style="margin:0;background:#fff">
+<div id="boot" role="status" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#fff;color:#5b564e;font:14px/1.6 'Hiragino Sans',sans-serif;letter-spacing:.08em">
+<div style="font-family:serif;font-size:17px;letter-spacing:.18em;color:#1e1c19">BIG HANDS MARKET</div><div id="bootmsg">読み込み中…</div></div>
+<div id="root"></div>
+<script>
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbzVxSEMjJ_gxR8k7lA9lPN_RKSUw_J6s_wp9kwA4wr9DRJ9LfcMSzFbe4eQUE-wY_SprQ/exec";
+  function call(fn, arg, ok, ng) {
+    fetch(API, { method: "POST", credentials: "omit", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: fn, arg: arg }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j && j.ok) { ok && ok(j.result); } else { ng && ng(new Error((j && j.error) || "error")); } })
+      .catch(function (e) { ng && ng(e); });
+  }
+  function runner(ok, ng) {
+    return new Proxy({}, { get: function (_, k) {
+      if (k === "withSuccessHandler") return function (f) { return runner(f, ng); };
+      if (k === "withFailureHandler") return function (f) { return runner(ok, f); };
+      return function (arg) { call(String(k), arg, ok, ng); };
+    } });
+  }
+  window.google = { script: { run: runner(null, null) } };
+  function fail() {
+    document.getElementById("bootmsg").innerHTML = "読み込めませんでした。<br>時間をおいてもう一度開くか、お電話（0258-80-1713）でお問い合わせください。";
+  }
+  fetch(API + "?api=supplier", { credentials: "omit", redirect: "follow" })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j || !j.ok) return fail();
+      var h = document.createElement("div"); h.innerHTML = j.css;
+      Array.prototype.slice.call(h.childNodes).forEach(function (n) { document.head.appendChild(n); });
+      var root = document.getElementById("root"); root.innerHTML = j.html;
+      root.querySelectorAll("script").forEach(function (old) { var s = document.createElement("script"); s.text = old.textContent; old.parentNode.replaceChild(s, old); });
+      var b = document.getElementById("boot"); if (b) b.parentNode.removeChild(b);
+    })
+    .catch(fail);
+})();
+</script>
+</body>
+</html>
