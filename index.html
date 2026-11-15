@@ -675,7 +675,7 @@ function detailsForm(u, t) {
 
 /* ===== 山八のサクッと予約フォーム（AIを使わない） ===== */
 var BOOK_TEXT = {
-  ja: { seat: 'お席', title: '山八 ご予約', lead: 'ディナーは19:00一斉スタートです。この画面で仮予約まで完了します。スタッフが確認後、確定のメールをお送りします。', back: '← チャットに戻る',
+  ja: { seat: 'お席', title: '山八 ご予約', time: 'ご来店時間', openNoTime: '{d} はお席をご用意できます。ご来店時間をお選びください。', lead: 'ご来店の時間をお選びいただけます。この画面で仮予約まで完了します。スタッフが確認後、確定のメールをお送りします。', back: '← チャットに戻る',
     s1: '1. 日付・人数・お席', s2: '2. コースとペアリング', s3: '3. ご連絡先', seats: [['either', 'おまかせ'], ['counter', 'カウンター'], ['private', '個室']],
     checking: '空き状況を確認しています…', open: '{d} {t}〜 お席をご用意できます。', full: 'ご希望のお席は満席です。キャンセル待ちとしてお申し込みいただけます（空きが出たらご連絡します）。',
     closed: 'この日はご予約を承れません。', ask: '{d} はスタッフが確認のうえご案内します。このままお申し込みいただけます。', group: '大人数のご予約は「団体・貸切」としてチャットでご相談ください。', pick: '日付を選ぶと空き状況が表示されます。',
@@ -683,7 +683,7 @@ var BOOK_TEXT = {
     doneTitle: '仮予約を承りました', doneWait: 'キャンセル待ちで承りました', doneNote: 'スタッフが確認し、確定しましたらメールでお知らせします。この時点ではご予約は確定していません。控えのメールをお送りしました。',
     doneWaitNote: 'お席に空きが出ましたら、スタッフよりご連絡いたします。この時点ではご予約ではありません。', total: '料金の目安', staff: 'スタッフよりご案内', chat: 'ほかに質問する（チャット）',
     errFull: '直前に満席になりました。キャンセル待ちでお申し込みいただけます。', errBusy: '混み合っています。少し待ってからもう一度お試しください。', errFail: '送信できませんでした。お手数ですがメールでお問い合わせください：', errCheck: '入力内容をご確認ください。' },
-  en: { seat: 'Seating', title: 'Book Yamahachi', lead: 'Dinner starts at 19:00 for all guests. You can request your reservation right here; our staff will email you once it is confirmed.', back: '← Back to chat',
+  en: { seat: 'Seating', title: 'Book Yamahachi', time: 'Start time', openNoTime: 'Seats are available on {d}. Please choose your start time.', lead: 'Choose the time you would like to start. You can request your reservation right here; our staff will email you once it is confirmed.', back: '← Back to chat',
     s1: '1. Date, guests & seating', s2: '2. Course & pairing', s3: '3. Your details', seats: [['either', 'No preference'], ['counter', 'Counter'], ['private', 'Private room']],
     checking: 'Checking availability…', open: 'Seats available on {d} from {t}.', full: 'Your preferred seating is full. You can join the waiting list and we will contact you if a seat opens.',
     closed: 'We cannot take reservations on this date.', ask: 'Our staff will confirm availability for {d}. You can still send your request.', group: 'For larger parties, please ask about group bookings in the chat.', pick: 'Choose a date to see availability.',
@@ -691,7 +691,7 @@ var BOOK_TEXT = {
     doneTitle: 'Request received', doneWait: 'Added to the waiting list', doneNote: 'Our staff will check and email you once it is confirmed. Your reservation is not confirmed yet. A copy has been sent to your email.',
     doneWaitNote: 'We will contact you if a seat opens. This is not a reservation yet.', total: 'Estimated total', staff: 'Staff will confirm', chat: 'Ask something else (chat)',
     errFull: 'The last seats were just taken. You can join the waiting list.', errBusy: 'We are busy right now. Please try again shortly.', errFail: 'We could not send your request. Please email us:', errCheck: 'Please check your entries.' },
-  fr: { seat: 'Place', title: 'Réserver au Yamahachi', lead: 'Le dîner commence à 19h00 pour tous. Envoyez votre demande ici ; nous vous confirmerons par e-mail.', back: '← Retour au chat',
+  fr: { seat: 'Place', title: 'Réserver au Yamahachi', time: 'Heure', openNoTime: 'Places disponibles le {d}. Choisissez votre heure.', lead: 'Choisissez votre heure d’arrivée. Envoyez votre demande ici ; nous vous confirmerons par e-mail.', back: '← Retour au chat',
     s1: '1. Date, personnes et place', s2: '2. Menu et accord', s3: '3. Vos coordonnées', seats: [['either', 'Indifférent'], ['counter', 'Comptoir'], ['private', 'Salon privé']],
     checking: 'Vérification…', open: 'Places disponibles le {d} à partir de {t}.', full: 'Complet pour cette option. Vous pouvez vous inscrire sur liste d’attente.',
     closed: 'Pas de réservation possible ce jour-là.', ask: 'Notre équipe confirmera la disponibilité du {d}. Vous pouvez envoyer votre demande.', group: 'Pour les groupes, contactez-nous via le chat.', pick: 'Choisissez une date pour voir les disponibilités.',
@@ -699,7 +699,7 @@ var BOOK_TEXT = {
     doneTitle: 'Demande reçue', doneWait: 'Inscrit sur liste d’attente', doneNote: 'Notre équipe vous confirmera par e-mail. La réservation n’est pas encore confirmée.',
     doneWaitNote: 'Nous vous contacterons si une place se libère.', total: 'Total estimé', staff: 'Confirmé par l’équipe', chat: 'Poser une autre question (chat)',
     errFull: 'Les dernières places viennent d’être prises. Liste d’attente possible.', errBusy: 'Veuillez réessayer dans un instant.', errFail: 'Envoi impossible. Écrivez-nous :', errCheck: 'Veuillez vérifier vos informations.' },
-  ko: { seat: '좌석', title: '야마하치 예약', lead: '디너는 19:00 일제 시작입니다. 이 화면에서 가예약까지 완료됩니다. 직원 확인 후 확정 메일을 보내 드립니다.', back: '← 채팅으로 돌아가기',
+  ko: { seat: '좌석', title: '야마하치 예약', time: '시작 시간', openNoTime: '{d}에 자리가 있습니다. 시작 시간을 선택해 주세요.', lead: '방문 시간을 선택하실 수 있습니다. 이 화면에서 가예약까지 완료됩니다. 직원 확인 후 확정 메일을 보내 드립니다.', back: '← 채팅으로 돌아가기',
     s1: '1. 날짜·인원·좌석', s2: '2. 코스와 페어링', s3: '3. 연락처', seats: [['either', '상관없음'], ['counter', '카운터'], ['private', '개별실']],
     checking: '빈자리를 확인 중…', open: '{d} {t}부터 자리가 있습니다.', full: '희망 좌석이 만석입니다. 취소 대기로 신청할 수 있습니다.',
     closed: '이 날은 예약을 받을 수 없습니다.', ask: '{d}은 직원이 확인 후 안내드립니다. 그대로 신청하셔도 됩니다.', group: '단체 예약은 채팅에서 상담해 주세요.', pick: '날짜를 선택하면 빈자리가 표시됩니다.',
@@ -707,7 +707,7 @@ var BOOK_TEXT = {
     doneTitle: '가예약을 접수했습니다', doneWait: '취소 대기로 접수했습니다', doneNote: '직원 확인 후 확정되면 메일로 알려 드립니다. 아직 확정된 예약은 아닙니다.',
     doneWaitNote: '자리가 나면 직원이 연락드립니다.', total: '예상 금액', staff: '직원이 안내', chat: '다른 질문하기 (채팅)',
     errFull: '방금 만석이 되었습니다. 취소 대기로 신청할 수 있습니다.', errBusy: '잠시 후 다시 시도해 주세요.', errFail: '보내지 못했습니다. 메일로 문의해 주세요:', errCheck: '입력 내용을 확인해 주세요.' },
-  zh: { seat: '座位', title: '预约山八', lead: '晚餐19:00统一开始。在此页面即可完成预约申请，工作人员确认后将发送确认邮件。', back: '← 返回聊天',
+  zh: { seat: '座位', title: '预约山八', time: '到店时间', openNoTime: '{d} 有空位，请选择到店时间。', lead: '可以选择到店时间。在此页面即可完成预约申请，工作人员确认后将发送确认邮件。', back: '← 返回聊天',
     s1: '1. 日期・人数・座位', s2: '2. 套餐与搭配', s3: '3. 联系方式', seats: [['either', '均可'], ['counter', '吧台'], ['private', '包间']],
     checking: '正在查询空位…', open: '{d} {t} 起有空位。', full: '所选座位已满。可以登记候补，有空位时我们会联系您。',
     closed: '该日不接受预约。', ask: '{d} 的空位将由工作人员确认，您可以直接提交申请。', group: '多人预约请在聊天中咨询团体预约。', pick: '选择日期后显示空位情况。',
@@ -719,7 +719,7 @@ var BOOK_TEXT = {
 var bk = null;
 function bookText() { return BOOK_TEXT[state.lang] || BOOK_TEXT.en; }
 function openBook() {
-  if (!bk || bk.result) bk = { date: '', people: 2, seat: 'either', course: '', pairs: {}, name: '', email: '', phone: '', note: '', policy: false, agree: false, avail: null, checking: false, sending: false, err: '', result: null, seq: 0 };
+  if (!bk || bk.result) bk = { date: '', time: '', people: 2, seat: 'either', course: '', pairs: {}, name: '', email: '', phone: '', note: '', policy: false, agree: false, avail: null, checking: false, sending: false, err: '', result: null, seq: 0 };
   state.view = 'book';
   render();
   window.scrollTo(0, 0);
@@ -792,6 +792,29 @@ function renderBook(log, t) {
     seats.appendChild(c);
   });
   fs.appendChild(seats); wrap.appendChild(fs);
+  // ご来店時間（「選べる開始時間」が設定されているときだけ出す）
+  var ft = el('div', 'field');
+  ft.appendChild(el('p', 'field-label', b.time));
+  var timeChips = el('div', 'chips');
+  ft.appendChild(timeChips); wrap.appendChild(ft);
+  var drawnTimes = '';
+  function timeList() { return (bk.avail && bk.avail.times && bk.avail.times.length) ? bk.avail.times : (B.times || []); }
+  function drawTimes() {
+    var list = timeList();
+    if (list.indexOf(bk.time) < 0) bk.time = '';
+    ft.style.display = list.length > 1 ? '' : 'none';
+    if (list.length === 1) bk.time = list[0];
+    var key = list.join(',') + '|' + bk.time;
+    if (key === drawnTimes) return;
+    drawnTimes = key;
+    timeChips.innerHTML = '';
+    list.forEach(function (tm) {
+      var c = el('button', 'chip' + (bk.time === tm ? ' on' : ''), tm); c.type = 'button';
+      c.setAttribute('aria-pressed', bk.time === tm ? 'true' : 'false');
+      c.onclick = function () { bk.time = tm; update(); };
+      timeChips.appendChild(c);
+    });
+  }
   var av = el('p', 'bk-avail', ''); av.setAttribute('aria-live', 'polite');
   wrap.appendChild(av);
 
@@ -872,17 +895,19 @@ function renderBook(log, t) {
 
   function availState() { return bk.avail ? bk.avail.state : ''; }
   function update() {
+    drawTimes();
+    var needTime = timeList().length > 1;
     pv.textContent = bk.people;
     Object.keys(pairNums).forEach(function (k) { pairNums[k].textContent = bk.pairs[k]; });
     left.textContent = t.kLeft.replace('{n}', Math.max(0, bk.people - pairTotal()));
     var s = availState();
     av.className = 'bk-avail' + (s === 'open' ? ' ok' : (s === 'full' || s === 'closed' || s === 'group') ? ' ng' : '');
     av.textContent = !bk.date ? b.pick : bk.checking ? b.checking
-      : s === 'open' ? b.open.replace('{d}', formatDate(bk.date)).replace('{t}', bk.avail.time || '19:00')
+      : s === 'open' ? (needTime && !bk.time ? b.openNoTime.replace('{d}', formatDate(bk.date)) : b.open.replace('{d}', formatDate(bk.date)).replace('{t}', bk.time || bk.avail.time || ''))
       : s === 'full' ? b.full : s === 'closed' ? (bk.avail.note || b.closed) : s === 'group' ? b.group
       : s === 'busy' ? b.errBusy : b.ask.replace('{d}', formatDate(bk.date));
     go.textContent = bk.sending ? b.sending : (s === 'full' ? b.submitWait : b.submit);
-    var ok = bk.date && !bk.checking && (s === 'open' || s === 'full' || s === 'ask') && bk.course &&
+    var ok = bk.date && !bk.checking && (s === 'open' || s === 'full' || s === 'ask') && bk.course && (!needTime || bk.time) &&
       bk.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(bk.email.trim()) && /^[0-9+\-() ]{6,20}$/.test(bk.phone.trim()) && bk.policy && bk.agree;
     go.disabled = !ok || bk.sending;
     errP.textContent = bk.err;
@@ -900,7 +925,7 @@ function renderBook(log, t) {
     if (go.disabled) return;
     bk.sending = true; bk.err = ''; update();
     var payload = { sessionId: state.sessionId, lang: state.lang, website: document.getElementById('hp').value,
-      date: bk.date, people: bk.people, seat: bk.seat, course: bk.course,
+      date: bk.date, time: bk.time, people: bk.people, seat: bk.seat, course: bk.course,
       pairings: Object.keys(bk.pairs).filter(function (k) { return bk.pairs[k] > 0; }).map(function (k) { return { id: k, count: bk.pairs[k] }; }),
       name: bk.name.trim(), email: bk.email.trim(), phone: bk.phone.trim(), note: bk.note.trim(),
       policy: bk.policy, agree: bk.agree, waitlist: availState() === 'full' };
@@ -910,7 +935,7 @@ function renderBook(log, t) {
       var e = r && r.error;
       if (e === 'full') { bk.avail = { state: 'full' }; bk.err = b.errFull; }
       else if (e === 'busy') bk.err = b.errBusy;
-      else if (e === 'invalid' || e === 'course') bk.err = b.errCheck;
+      else if (e === 'invalid' || e === 'course' || e === 'time') bk.err = b.errCheck;
       else if (e === 'closed') { bk.avail = { state: 'closed', note: r.message }; bk.err = ''; }
       else bk.err = b.errFail + ' ' + ((r && r.email) || '');
       update();
