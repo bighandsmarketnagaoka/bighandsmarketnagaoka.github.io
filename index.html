@@ -90,6 +90,9 @@
   .promo { align-self: stretch; border: 2px solid var(--accent); border-radius: 12px; background: #fbf5ef; padding: 12px 16px; display: grid; gap: 4px; }
   .promo-title { margin: 0; font-weight: 600; font-size: 16px; }
   .promo-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .notice { border-color: var(--line, #d9d3c7); background: #fff; grid-template-columns: 96px 1fr; column-gap: 14px; align-items: start; }
+  .notice-img { grid-row: span 3; width: 96px; height: auto; border-radius: 8px; border: 1px solid #eee; background: #fff; }
+  .notice .ask { justify-self: start; }
   .ask { justify-self: start; margin-top: 6px; border: none; background: var(--accent); color: #fff; border-radius: 20px; padding: 9px 20px; cursor: pointer; }
   .logo { display: block; max-height: 260px; max-width: min(300px, 70vw); width: auto; }
   .hero { margin: 0 -20px; aspect-ratio: 16 / 9; max-width: calc(100% + 40px); overflow: hidden; background: var(--paper-deep); }
@@ -280,6 +283,18 @@ function render() {
     pb.onclick = function () { openInquiry('group'); if (!iq.note) { iq.note = ja ? '忘年会・新年会' : 'Year-end / New Year party'; render(); } };
     pr.appendChild(pb);
     log.appendChild(pr);
+  }
+  if (!state.messages.length && CFG.notice && CFG.notice.title) {
+    var jn = state.lang === 'ja';
+    var nt = el('div', 'promo notice');
+    if (CFG.notice.img) { var ni = document.createElement('img'); ni.className = 'notice-img'; ni.src = CFG.notice.img; ni.alt = jn ? CFG.notice.title : 'Miso, tacos and local sake'; ni.loading = 'lazy'; ni.onerror = function () { ni.remove(); nt.classList.remove('notice'); }; nt.appendChild(ni); }
+    nt.appendChild(el('p', 'promo-title', jn ? CFG.notice.title : 'Walk-ins on nights without bookings: miso, tacos & local sake'));
+    var ntx = jn ? CFG.notice.text : 'On nights when Yamahachi has no dinner bookings, you may be able to drop in without a reservation from 17:30: chef\'s-choice dishes with miso and tacos, aged sake and a closing bowl of ramen. Seating depends on the day, so we may not always be able to seat you.';
+    if (ntx) nt.appendChild(el('p', 'promo-text', ntx));
+    var nb2 = el('button', 'ask', jn ? '予約なしで行けるか聞いてみる' : 'Ask about walking in'); nb2.type = 'button';
+    nb2.onclick = function () { send(jn ? '予約なしで山八（味噌とタコスと地酒）を利用できますか？' : 'Can I walk in to Yamahachi without a booking?', 'restaurant'); };
+    nt.appendChild(nb2);
+    log.appendChild(nt);
   }
   if (!state.messages.length) {
     var chips = el('div', 'chips');
