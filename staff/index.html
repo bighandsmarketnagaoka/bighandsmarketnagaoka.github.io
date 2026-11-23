@@ -8,7 +8,7 @@
 <title>山八 スタッフ用</title>
 </head>
 <body style="margin:0;background:#fff">
-<div id="boot" role="status" style="padding:40px 16px;text-align:center;color:#5b564e;font:14px/1.6 'Hiragino Sans',sans-serif">読み込み中…</div>
+<div id="boot" role="status" style="padding:40px 16px;text-align:center;color:#5b564e;font:14px/1.6 'Hiragino Sans',sans-serif">読み込み中…<br><small>10秒ほどかかることがあります。このままお待ちください。</small></div>
 <div id="root"></div>
 <script>
 (function () {
@@ -29,7 +29,12 @@
     } });
   }
   window.google = { script: { run: runner(null, null) } };
-  function fail() { document.getElementById("boot").textContent = "読み込めませんでした。電波のよい場所でもう一度開いてください。"; }
+  var GAS = API + "?staff=" + encodeURIComponent(staff) + "&t=" + encodeURIComponent(t);
+  function fail() {
+    var b = document.getElementById("boot"); if (!b) return;
+    b.innerHTML = "読み込めませんでした。<br><button type=\"button\" onclick=\"location.reload()\" style=\"margin:12px 0;padding:10px 18px;border-radius:999px;border:0;background:#9a5b34;color:#fff;font-size:15px\">もう一度読み込む</button><br><a href=\"" + GAS + "\" style=\"color:#9a5b34\">うまくいかないときはこちら（別の画面で開く）</a>";
+  }
+  var slow = setTimeout(function () { var b = document.getElementById("boot"); if (b) b.insertAdjacentHTML("beforeend", "<p style=\"margin-top:16px\"><a href=\"" + GAS + "\" style=\"color:#9a5b34\">開かないときはこちら（別の画面で開く）</a></p>"); }, 20000);
   if (!staff || !t) { document.getElementById("boot").textContent = "このリンクは使えません。"; return; }
   fetch(API + "?api=staff&staff=" + encodeURIComponent(staff) + "&t=" + encodeURIComponent(t), { credentials: "omit", redirect: "follow" })
     .then(function (r) { return r.json(); })
@@ -40,6 +45,7 @@
       Array.prototype.slice.call(h.childNodes).forEach(function (n) { document.head.appendChild(n); });
       var root = document.getElementById("root"); root.innerHTML = j.html;
       root.querySelectorAll("script").forEach(function (old) { var s = document.createElement("script"); s.text = old.textContent; old.parentNode.replaceChild(s, old); });
+      clearTimeout(slow);
       var b = document.getElementById("boot"); if (b) b.parentNode.removeChild(b);
     })
     .catch(fail);
