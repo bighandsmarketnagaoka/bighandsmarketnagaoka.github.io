@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>クリスマス・年末年始オードブルのご予約｜SUZU GROUP</title>
-<meta name="description" content="SUZU GROUP のクリスマスオードブル・年末年始のおせちとオードブルのご予約フォーム。BIG HANDS MARKET（BANK DELI）でお受け取り、店頭でお支払い。">
+<title>クリスマス・年末年始 オードブル・おせちのご予約｜SUZU GROUP</title>
+<meta name="description" content="SUZU GROUP のクリスマスオードブル、年末年始のおせち・オードブルのご予約フォーム。BIG HANDS MARKET（BANK DELI）でお受け取り、店頭でお支払い。">
 <style>
   :root { --paper: #faf8f4; --ink: #2a2622; --soft: #5b564e; --line: #e3ded5; --accent: #9a5b34; --accent-soft: #f4ebe3; --ng: #a33a2a; }
   * { box-sizing: border-box; }
@@ -43,13 +43,17 @@
   .muted { color: var(--soft); font-size: 13px; }
   .hp { position: absolute; left: -9999px; }
   .boot { text-align: center; color: var(--soft); padding: 40px 0; }
+  .menu { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; }
+  .menu h3 { font-size: 14px; margin: 6px 0 2px; color: var(--accent); }
+  .menu ul { margin: 0 0 6px; padding-left: 1.2em; }
+  .chip small { display: block; font-size: 11px; opacity: .85; }
 </style>
 </head>
 <body>
 <main>
   <header>
     <p class="brand">SUZU GROUP</p>
-    <h1>クリスマス・年末年始オードブルのご予約</h1>
+    <h1>クリスマス・年末年始<br>オードブル・おせちのご予約</h1>
     <p class="lead">BIG HANDS MARKET（BANK DELI）でお受け取り・店頭でお支払い</p>
   </header>
   <div id="app"><p class="boot" role="status">読み込み中…<br><small>10秒ほどかかることがあります</small></p></div>
@@ -76,8 +80,15 @@
     var h = "";
     if (C.staff) h += '<div class="staffbar">スタッフ入力モード：電話・店頭で受けたご注文を入れます（締切後も入力できます）</div>';
     else if (staffToken) h += '<div class="staffbar">このスタッフ用リンクは使えません。お客様として入力します。</div>';
+    if (!sel.date) {
+      var groups = {}, order = [];
+      C.dates.forEach(function (d) { d.items.forEach(function (it) { if (!groups[it.kind]) { groups[it.kind] = { days: [], items: {} }; order.push(it.kind); } if (groups[it.kind].days.indexOf(d.label) < 0) groups[it.kind].days.push(d.label); groups[it.kind].items[it.id] = it; }); });
+      h += '<div class="menu"><strong>ご予約いただける商品</strong>';
+      order.forEach(function (k) { var g = groups[k]; h += '<h3>' + esc(k) + '（お受け取り ' + esc(g.days.join('・')) + '）</h3><ul>'; Object.keys(g.items).forEach(function (id) { var it = g.items[id]; h += '<li>' + esc(it.name) + '（' + esc(it.desc) + '）' + yen(it.price) + (it.soldOut ? '　完売' : '') + '</li>'; }); h += '</ul>'; });
+      h += '<span class="muted">お受け取りの日を選ぶと、その日の商品が選べます。</span></div>';
+    }
     h += '<h2><span class="n">1</span>お受け取りの日</h2><div class="dates">';
-    C.dates.forEach(function (d) { h += '<button type="button" class="chip" data-date="' + d.date + '" aria-pressed="' + (sel.date === d.date) + '">' + esc(d.label) + '</button>'; });
+    C.dates.forEach(function (d) { var kinds = []; d.items.forEach(function (it) { if (kinds.indexOf(it.kind) < 0) kinds.push(it.kind); }); h += '<button type="button" class="chip" data-date="' + d.date + '" aria-pressed="' + (sel.date === d.date) + '">' + esc(d.label) + '<small>' + esc(kinds.join('・')) + (d.items.some(function (it) { return /おせち/.test(it.name); }) ? '（おせち・オードブル）' : '') + '</small></button>'; });
     h += "</div>";
     var d = day();
     if (d) {
