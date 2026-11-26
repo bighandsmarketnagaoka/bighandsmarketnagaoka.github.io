@@ -66,7 +66,7 @@
   function day() { for (var i = 0; i < C.dates.length; i++) if (C.dates[i].date === sel.date) return C.dates[i]; return null; }
   function total() { var d = day(), t = 0; if (d) d.items.forEach(function (it) { t += (sel.qty[it.id] || 0) * it.price; }); return t; }
   function load() {
-    fetch(API + "?api=orders" + (staffToken ? "&staff=" + encodeURIComponent(staffToken) : ""), { credentials: "omit", redirect: "follow" })
+    fetch(API + "?api=orders" + (staffToken ? "&st=" + encodeURIComponent(staffToken) : ""), { credentials: "omit", redirect: "follow" })
       .then(function (r) { return r.json(); })
       .then(function (j) { if (!j || !j.ok) throw new Error("ng"); C = j; render(); })
       .catch(function () { app.innerHTML = '<p class="boot">読み込めませんでした。<br><button class="go" type="button" onclick="location.reload()">もう一度読み込む</button><br><span class="muted">お電話（0258-80-1713）でもご予約いただけます。</span></p>'; });
