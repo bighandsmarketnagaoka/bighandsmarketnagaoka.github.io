@@ -284,6 +284,14 @@ function render() {
     pr.appendChild(pb);
     log.appendChild(pr);
   }
+  if (!state.messages.length && CFG.order && CFG.order.url && state.lang === 'ja') {
+    var od = el('div', 'promo');
+    od.appendChild(el('p', 'promo-title', CFG.order.title));
+    if (CFG.order.text) od.appendChild(el('p', 'promo-text', CFG.order.text));
+    var oa = document.createElement('a'); oa.className = 'ask'; oa.href = CFG.order.url; oa.target = '_top'; oa.textContent = 'ご予約ページを開く'; oa.style.textDecoration = 'none'; oa.style.display = 'inline-block';
+    od.appendChild(oa);
+    log.appendChild(od);
+  }
   if (!state.messages.length && CFG.notice && CFG.notice.title) {
     var jn = state.lang === 'ja';
     var nt = el('div', 'promo notice');
