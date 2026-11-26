@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>クリスマス・年末年始オードブルのご予約｜SUZU GROUP</title>
+<meta name="description" content="SUZU GROUP のクリスマスオードブル・年末年始のおせちとオードブルのご予約フォーム。BIG HANDS MARKET（BANK DELI）でお受け取り、店頭でお支払い。">
+<style>
+  :root { --paper: #faf8f4; --ink: #2a2622; --soft: #5b564e; --line: #e3ded5; --accent: #9a5b34; --accent-soft: #f4ebe3; --ng: #a33a2a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.7 "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 18px 80px; }
+  header { text-align: center; padding: 8px 0 18px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+  .brand { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; letter-spacing: .2em; font-size: 13px; color: var(--soft); margin: 0; }
+  h1 { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-weight: 600; font-size: 22px; margin: 6px 0 4px; }
+  .lead { color: var(--soft); font-size: 14px; margin: 0; }
+  .staffbar { background: #2a2622; color: #fff; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 14px; }
+  h2 { font-size: 16px; margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
+  h2 .n { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; }
+  .dates { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 9px 16px; font: inherit; cursor: pointer; color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip:disabled { opacity: .45; cursor: default; }
+  .item { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .item .nm { font-weight: 600; }
+  .item .meta { color: var(--soft); font-size: 13px; }
+  .item .tag { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; }
+  .item .tag.ng { background: #f6e3df; color: var(--ng); }
+  .qty { grid-row: span 2; align-self: center; display: flex; align-items: center; gap: 6px; }
+  .qty button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 18px; cursor: pointer; color: var(--ink); }
+  .qty output { min-width: 22px; text-align: center; font-weight: 600; }
+  label { display: block; font-size: 13px; color: var(--soft); margin: 12px 0 4px; }
+  input, select, textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; background: #fff; color: var(--ink); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sum { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line); margin: 24px -18px 0; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .sum .total { font-size: 18px; font-weight: 700; }
+  .go { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 13px 22px; font: inherit; font-weight: 600; cursor: pointer; }
+  .go:disabled { opacity: .5; cursor: default; }
+  .policy { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: var(--soft); }
+  .msg { color: var(--ng); font-weight: 600; margin-top: 10px; min-height: 1em; }
+  .done { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px 18px; }
+  .done h2 { margin-top: 0; }
+  .muted { color: var(--soft); font-size: 13px; }
+  .hp { position: absolute; left: -9999px; }
+  .boot { text-align: center; color: var(--soft); padding: 40px 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="brand">SUZU GROUP</p>
+    <h1>クリスマス・年末年始オードブルのご予約</h1>
+    <p class="lead">BIG HANDS MARKET（BANK DELI）でお受け取り・店頭でお支払い</p>
+  </header>
+  <div id="app"><p class="boot" role="status">読み込み中…<br><small>10秒ほどかかることがあります</small></p></div>
+</main>
+<script>
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbzVxSEMjJ_gxR8k7lA9lPN_RKSUw_J6s_wp9kwA4wr9DRJ9LfcMSzFbe4eQUE-wY_SprQ/exec";
+  var q = new URLSearchParams(location.search);
+  var staffToken = q.get("staff") || "";
+  var app = document.getElementById("app");
+  var C = null, sel = { date: "", qty: {} };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function yen(n) { return Number(n || 0).toLocaleString("ja-JP") + "円"; }
+  function day() { for (var i = 0; i < C.dates.length; i++) if (C.dates[i].date === sel.date) return C.dates[i]; return null; }
+  function total() { var d = day(), t = 0; if (d) d.items.forEach(function (it) { t += (sel.qty[it.id] || 0) * it.price; }); return t; }
+  function load() {
+    fetch(API + "?api=orders" + (staffToken ? "&staff=" + encodeURIComponent(staffToken) : ""), { credentials: "omit", redirect: "follow" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (!j || !j.ok) throw new Error("ng"); C = j; render(); })
+      .catch(function () { app.innerHTML = '<p class="boot">読み込めませんでした。<br><button class="go" type="button" onclick="location.reload()">もう一度読み込む</button><br><span class="muted">お電話（0258-80-1713）でもご予約いただけます。</span></p>'; });
+  }
+  function render() {
+    if (!C.dates.length) { app.innerHTML = '<p class="boot">現在ご予約を受け付けている商品はありません。</p>'; return; }
+    var h = "";
+    if (C.staff) h += '<div class="staffbar">スタッフ入力モード：電話・店頭で受けたご注文を入れます（締切後も入力できます）</div>';
+    else if (staffToken) h += '<div class="staffbar">このスタッフ用リンクは使えません。お客様として入力します。</div>';
+    h += '<h2><span class="n">1</span>お受け取りの日</h2><div class="dates">';
+    C.dates.forEach(function (d) { h += '<button type="button" class="chip" data-date="' + d.date + '" aria-pressed="' + (sel.date === d.date) + '">' + esc(d.label) + '</button>'; });
+    h += "</div>";
+    var d = day();
+    if (d) {
+      h += '<h2><span class="n">2</span>商品と個数</h2>';
+      d.items.forEach(function (it) {
+        var off = it.soldOut || it.closed;
+        var tag = it.soldOut ? '<span class="tag ng">完売</span>' : it.closed ? '<span class="tag ng">受付終了</span>' : it.remaining !== null ? '<span class="tag">残り' + it.remaining + '</span>' : "";
+        var n = sel.qty[it.id] || 0;
+        h += '<div class="item"><div><span class="nm">' + esc(it.name) + '</span>' + tag + '</div>' +
+          '<div class="qty">' + (off ? "" : '<button type="button" data-dec="' + it.id + '" aria-label="' + esc(it.name) + 'を減らす">−</button><output>' + n + '</output><button type="button" data-inc="' + it.id + '" aria-label="' + esc(it.name) + 'を増やす">＋</button>') + '</div>' +
+          '<div class="meta">' + esc(it.desc) + '　' + yen(it.price) + '（税込）' + (it.deadline ? '　受付締切 ' + esc(it.deadline) : '') + '</div></div>';
+      });
+      h += '<h2><span class="n">3</span>お受け取り時間とご連絡先</h2>';
+      h += '<label for="time">お受け取り時間</label><select id="time"><option value="">選んでください</option>' + C.times.map(function (t) { return '<option' + (sel.time === t ? ' selected' : '') + '>' + t + '</option>'; }).join("") + '</select>';
+      h += '<label for="name">お名前</label><input id="name" autocomplete="name" value="' + esc(sel.name || "") + '">';
+      h += '<div class="row"><div><label for="phone">お電話番号</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel" value="' + esc(sel.phone || "") + '"></div>' +
+        '<div><label for="email">メール（控えをお送りします・任意）</label><input id="email" type="email" autocomplete="email" value="' + esc(sel.email || "") + '"></div></div>';
+      h += '<label for="note">ご要望など（任意）</label><textarea id="note" rows="2">' + esc(sel.note || "") + '</textarea>';
+      if (C.staff) h += '<div class="row"><div><label for="staff">担当者名</label><input id="staff" value="' + esc(localStorage.getItem("orderStaff") || "") + '"></div><div><label for="route">受付経路</label><select id="route"><option>電話</option><option>店頭</option><option>メール</option><option>その他</option></select></div></div>';
+      h += '<input class="hp" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">';
+      h += '<p style="margin-top:18px" class="policy"><strong>お支払い</strong>：お受け取りの際に店頭でお支払いください。<br><strong>お受け取り場所</strong>：' + esc(C.store) + '<br>' + esc(C.policy) + '</p>';
+      h += '<div class="sum"><div><div class="muted">合計（税込）</div><div class="total" id="total">' + yen(total()) + '</div></div><button class="go" id="send" type="button">この内容で予約する</button></div><p class="msg" id="msg" role="alert"></p>';
+    }
+    app.innerHTML = h;
+    bind();
+  }
+  function keep() { ["time", "name", "phone", "email", "note"].forEach(function (k) { var e = document.getElementById(k); if (e) sel[k] = e.value; }); }
+  function bind() {
+    app.querySelectorAll("[data-date]").forEach(function (b) { b.onclick = function () { keep(); if (sel.date !== b.dataset.date) sel.qty = {}; sel.date = b.dataset.date; render(); }; });
+    app.querySelectorAll("[data-inc],[data-dec]").forEach(function (b) {
+      b.onclick = function () {
+        keep();
+        var id = b.dataset.inc || b.dataset.dec, d = day(), it = d.items.filter(function (x) { return x.id === id; })[0];
+        var n = (sel.qty[id] || 0) + (b.dataset.inc ? 1 : -1);
+        if (n < 0) n = 0; if (n > 50) n = 50; if (it.remaining !== null && n > it.remaining) n = it.remaining;
+        sel.qty[id] = n; render();
+      };
+    });
+    var s = document.getElementById("send"); if (s) s.onclick = send;
+  }
+  function send() {
+    keep();
+    var msg = document.getElementById("msg"), btn = document.getElementById("send");
+    if (!total()) { msg.textContent = "商品と個数を選んでください。"; return; }
+    if (!sel.time) { msg.textContent = "お受け取り時間を選んでください。"; return; }
+    if (!sel.name || !sel.phone) { msg.textContent = "お名前とお電話番号を入れてください。"; return; }
+    var arg = { date: sel.date, time: sel.time, name: sel.name, phone: sel.phone, email: sel.email, note: sel.note, items: sel.qty, hp: document.getElementById("hp").value };
+    if (C.staff) { arg.staffToken = staffToken; arg.staff = document.getElementById("staff").value; arg.route = document.getElementById("route").value; arg.override = true; try { localStorage.setItem("orderStaff", arg.staff); } catch (e) {} }
+    btn.disabled = true; msg.style.color = ""; msg.textContent = "送信しています…";
+    fetch(API, { method: "POST", credentials: "omit", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: "orderSubmit", arg: arg }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var r = j && j.result;
+        if (!j || !j.ok || !r) throw new Error("ng");
+        if (!r.ok) { btn.disabled = false; msg.textContent = r.msg || "送信できませんでした。"; return; }
+        app.innerHTML = '<div class="done"><h2>ご予約を承りました</h2><p>注文ID：<strong>' + esc(r.id) + '</strong></p><p>お受け取り：' + esc(r.when) + '<br>' + esc(C.store) + '</p><p>' + r.lines.map(esc).join("<br>") + '</p><p><strong>合計 ' + yen(r.total) + '（税込）</strong>　お受け取りの際に店頭でお支払いください。</p><p class="muted">' + (sel.email ? "控えをメールでお送りしました。" : "") + esc(C.policy) + '<br>変更・キャンセルはお電話（' + esc(C.tel) + '）でご連絡ください。</p>' +
+          (C.staff ? '<p><button class="go" type="button" onclick="location.reload()">続けて入力する</button></p>' : '') + '</div>';
+        window.scrollTo(0, 0);
+      })
+      .catch(function () { btn.disabled = false; msg.textContent = "送信できませんでした。通信状況を確かめて、もう一度お試しください。"; });
+  }
+  load();
+})();
+</script>
+</body>
+</html>
