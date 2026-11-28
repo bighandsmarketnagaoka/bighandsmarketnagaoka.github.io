@@ -852,6 +852,8 @@ function renderBook(log, t) {
 
   // 2. コースとペアリング
   wrap.appendChild(el('p', 'bk-step', b.s2));
+  // コースが1つだけのときは最初から選んだ状態にする（選ばなくても仮予約できる）
+  if (!bk.course && (B.courses || []).length === 1) bk.course = B.courses[0].id;
   var list = el('div', 'course-list');
   (B.courses || []).forEach(function (c) {
     var cb = el('button', 'course' + (bk.course === c.id ? ' on' : '')); cb.type = 'button';
