@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SNOW FOOD CHRISTMAS｜山八 ご予約</title>
-<meta name="description" content="山八の3日間限定クリスマスディナー。2026年12月23日・24日・25日 19:00一斉スタート。全9品 お一人様15,000円。">
+<meta name="description" content="山八の3日間限定クリスマスディナー。2026年12月23日・24日・25日 19:00一斉スタート。全9品 お一人様18,000円。">
 <style>
   :root { --paper: #f7f5f0; --ink: #1f2a2a; --soft: #5d6463; --line: #dfe3e0; --accent: #7a2e2a; --accent-soft: #f3e7e4; --snow: #ffffff; --green: #2f4a41; --ng: #a33a2a; }
   * { box-sizing: border-box; }
@@ -78,11 +78,12 @@
   <section class="hero">
     <p class="brand">YAMAHACHI ｜ BIG HANDS MARKET</p>
     <h1>SNOW FOOD CHRISTMAS<small>山八</small></h1>
-    <p>米と野菜と麹の出汁から始まり、新潟和牛のグリル、炊きたての竈門ご飯へ。長岡の冬の食材と発酵を楽しむ、3日間限定のクリスマスディナーです。</p>
+    <p>ナショナル ジオグラフィック「Best of the World 2027」で、日本から唯一選ばれた新潟。評価されたのは、何世紀も続く発酵文化でした。</p>
+    <p>その記事で紹介されたシェフ・鈴木将が、長岡の冬の食材と味噌・醤油・麹で描く、3日間限定のクリスマスディナー。米と野菜と麹の出汁から始まり、新潟和牛のグリル、炊きたての竈門ご飯へ。</p>
     <div class="facts">
       <div class="fact wide"><b>開催日</b><span>12月23日（水）・24日（木）・25日（金）</span></div>
       <div class="fact"><b>開始時間</b><span>19:00 一斉スタート</span></div>
-      <div class="fact"><b>コース</b><span>全9品 15,000円</span></div>
+      <div class="fact"><b>コース</b><span>全9品 18,000円</span></div>
     </div>
   </section>
 
@@ -90,10 +91,10 @@
     <h2>料金</h2>
     <div class="card">
       <table class="price">
-        <tr><td>クリスマスディナー 全9品</td><td>お一人様 15,000円</td></tr>
+        <tr><td>クリスマスディナー 全9品</td><td>お一人様 18,000円</td></tr>
         <tr><td>日本酒ペアリング</td><td>お一人様 8,000円</td></tr>
         <tr><td>ノンアルコールペアリング</td><td>お一人様 8,000円</td></tr>
-        <tr><td>ペアリング付き</td><td>お一人様 23,000円</td></tr>
+        <tr><td>ペアリング付き</td><td>お一人様 26,000円</td></tr>
         <tr><td>個室をご利用の場合</td><td id="feeRow">別途 個室料</td></tr>
       </table>
     </div>
@@ -234,9 +235,9 @@
   }
 
   function lines() {
-    var a = [["クリスマスディナー", "15,000円 × " + S.people + "名", C.coursePrice * S.people]];
-    if (S.sake) a.push(["日本酒ペアリング", "8,000円 × " + S.sake + "名", C.pairingPrice * S.sake]);
-    if (S.nonalc) a.push(["ノンアルコールペアリング", "8,000円 × " + S.nonalc + "名", C.pairingPrice * S.nonalc]);
+    var a = [["クリスマスディナー", yen(C.coursePrice) + " × " + S.people + "名", C.coursePrice * S.people]];
+    if (S.sake) a.push(["日本酒ペアリング", yen(C.pairingPrice) + " × " + S.sake + "名", C.pairingPrice * S.sake]);
+    if (S.nonalc) a.push(["ノンアルコールペアリング", yen(C.pairingPrice) + " × " + S.nonalc + "名", C.pairingPrice * S.nonalc]);
     if (roomFee()) a.push(["個室料", "1室", roomFee()]);
     return a;
   }
