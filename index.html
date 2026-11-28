@@ -284,6 +284,15 @@ function render() {
     pr.appendChild(pb);
     log.appendChild(pr);
   }
+  if (!state.messages.length && CFG.xmas && CFG.xmas.url) {
+    var xjn = state.lang === 'ja';
+    var xd = el('div', 'promo');
+    xd.appendChild(el('p', 'promo-title', '🎄 ' + CFG.xmas.title));
+    xd.appendChild(el('p', 'promo-text', xjn ? CFG.xmas.text : CFG.xmas.textEn));
+    var xa = document.createElement('a'); xa.className = 'ask'; xa.href = CFG.xmas.url; xa.target = '_top'; xa.textContent = xjn ? 'クリスマスディナーを予約する' : 'Book the Christmas dinner'; xa.style.textDecoration = 'none'; xa.style.display = 'inline-block';
+    xd.appendChild(xa);
+    log.appendChild(xd);
+  }
   if (!state.messages.length && CFG.order && CFG.order.url && state.lang === 'ja') {
     var od = el('div', 'promo');
     od.appendChild(el('p', 'promo-title', CFG.order.title));
