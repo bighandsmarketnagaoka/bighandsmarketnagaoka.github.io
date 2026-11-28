@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SNOW FOOD CHRISTMAS｜山八 ご予約</title>
+<meta name="description" content="山八の3日間限定クリスマスディナー。2026年12月23日・24日・25日 19:00一斉スタート。全9品 お一人様15,000円。">
+<style>
+  :root { --paper: #f7f5f0; --ink: #1f2a2a; --soft: #5d6463; --line: #dfe3e0; --accent: #7a2e2a; --accent-soft: #f3e7e4; --snow: #ffffff; --green: #2f4a41; --ng: #a33a2a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.75 "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  main { max-width: 600px; margin: 0 auto; padding: 0 0 120px; }
+  .hero { background: var(--green); color: #fff; padding: 30px 20px 24px; text-align: center; }
+  .hero .brand { letter-spacing: .25em; font-size: 12px; opacity: .8; margin: 0; }
+  .hero h1 { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-weight: 600; font-size: 25px; letter-spacing: .06em; margin: 6px 0 2px; line-height: 1.35; }
+  .hero h1 small { display: block; font-size: 15px; letter-spacing: .2em; opacity: .9; margin-top: 4px; }
+  .hero p { font-size: 14px; margin: 12px auto 0; max-width: 30em; opacity: .95; text-align: left; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 0; text-align: left; }
+  .fact { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); border-radius: 12px; padding: 10px 12px; }
+  .fact b { display: block; font-size: 12px; font-weight: 500; opacity: .8; }
+  .fact span { font-size: 16px; font-weight: 700; line-height: 1.4; }
+  .fact.wide { grid-column: span 2; }
+  .wrap { padding: 0 18px; }
+  h2 { font-size: 17px; margin: 28px 0 10px; display: flex; align-items: center; gap: 8px; }
+  h2 .n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; flex: none; }
+  .card { background: var(--snow); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .price { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .price td { padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .price td:last-child { text-align: right; font-weight: 700; white-space: nowrap; }
+  .price tr:last-child td { border-bottom: 0; }
+  details.menu summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
+  details.menu summary::after { content: "＋"; color: var(--accent); }
+  details.menu[open] summary::after { content: "－"; }
+  .menu ol { margin: 10px 0 0; padding-left: 1.6em; font-size: 14px; }
+  .menu li { padding: 3px 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { flex: 1 1 30%; min-width: 96px; border: 1.5px solid var(--line); background: #fff; border-radius: 12px; padding: 10px 8px; font: inherit; cursor: pointer; color: var(--ink); text-align: center; line-height: 1.35; }
+  .chip b { display: block; font-size: 16px; }
+  .chip small { display: block; font-size: 12px; color: var(--soft); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip[aria-pressed="true"] small { color: #fff; opacity: .9; }
+  .chip:disabled { opacity: .5; cursor: default; }
+  .note { font-size: 13px; color: var(--soft); margin: 8px 0 0; }
+  .warn { font-size: 13px; color: var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 8px 12px; margin: 8px 0 0; }
+  .step { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .step:last-child { border-bottom: 0; }
+  .step .lb { font-weight: 600; }
+  .step .lb small { display: block; font-weight: 400; font-size: 12px; color: var(--soft); }
+  .qty { display: flex; align-items: center; gap: 8px; flex: none; }
+  .qty button { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; font-size: 20px; cursor: pointer; color: var(--ink); }
+  .qty button:disabled { opacity: .35; }
+  .qty output { min-width: 34px; text-align: center; font-weight: 700; font-size: 17px; }
+  label { display: block; font-size: 13px; color: var(--soft); margin: 12px 0 4px; }
+  label .req { color: var(--accent); font-size: 11px; margin-left: 4px; }
+  input, textarea { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 16px; background: #fff; color: var(--ink); }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); padding: 10px 18px calc(10px + env(safe-area-inset-bottom)); z-index: 5; }
+  .bar .in { max-width: 600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .bar .t { font-size: 12px; color: var(--soft); line-height: 1.3; }
+  .bar .t strong { display: block; font-size: 20px; color: var(--ink); }
+  .go { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 14px 22px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .go:disabled { opacity: .5; cursor: default; }
+  .ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--line); border-radius: 999px; padding: 13px 20px; font: inherit; cursor: pointer; }
+  .msg { color: var(--ng); font-weight: 600; margin: 12px 0 0; min-height: 1em; }
+  .conf dl { margin: 0; display: grid; grid-template-columns: 6.5em 1fr; gap: 6px 10px; font-size: 15px; }
+  .conf dt { color: var(--soft); }
+  .conf dd { margin: 0; font-weight: 600; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; border-top: 2px solid var(--ink); margin-top: 8px; padding-top: 10px; font-weight: 700; }
+  .total span:last-child { font-size: 22px; }
+  .done { text-align: center; }
+  .done .big { font-size: 20px; font-weight: 700; margin: 6px 0; }
+  .boot { text-align: center; color: var(--soft); padding: 40px 0; }
+  .hp { position: absolute; left: -9999px; }
+  .muted { color: var(--soft); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <p class="brand">YAMAHACHI ｜ BIG HANDS MARKET</p>
+    <h1>SNOW FOOD CHRISTMAS<small>山八</small></h1>
+    <p>米と野菜と麹の出汁から始まり、新潟和牛のグリル、炊きたての竈門ご飯へ。長岡の冬の食材と発酵を楽しむ、3日間限定のクリスマスディナーです。</p>
+    <div class="facts">
+      <div class="fact wide"><b>開催日</b><span>12月23日（水）・24日（木）・25日（金）</span></div>
+      <div class="fact"><b>開始時間</b><span>19:00 一斉スタート</span></div>
+      <div class="fact"><b>コース</b><span>全9品 15,000円</span></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <h2>料金</h2>
+    <div class="card">
+      <table class="price">
+        <tr><td>クリスマスディナー 全9品</td><td>お一人様 15,000円</td></tr>
+        <tr><td>日本酒ペアリング</td><td>お一人様 8,000円</td></tr>
+        <tr><td>ノンアルコールペアリング</td><td>お一人様 8,000円</td></tr>
+        <tr><td>ペアリング付き</td><td>お一人様 23,000円</td></tr>
+        <tr><td>個室をご利用の場合</td><td id="feeRow">別途 個室料</td></tr>
+      </table>
+    </div>
+
+    <h2>コース内容</h2>
+    <details class="menu card">
+      <summary>全9品を見る</summary>
+      <ol>
+        <li>米と野菜と麹の出汁</li>
+        <li>季節野菜のなます　すだち胡椒</li>
+        <li>味噌バーニャカウダ</li>
+        <li>生マグロ　自家製醤油麹と発酵わさび</li>
+        <li>山八タコス</li>
+        <li>焼き芋の炙り　酒粕クリーム</li>
+        <li>新潟和牛のグリル　中之島れんこんと摂田屋醤油</li>
+        <li>竈門ご飯　味噌漬けと味噌汁</li>
+        <li>発酵テリーヌショコラ　越後姫と味噌くるみ</li>
+      </ol>
+    </details>
+
+    <div id="app"><p class="boot" role="status">予約フォームを読み込み中…<br><small>10秒ほどかかることがあります</small></p></div>
+  </div>
+</main>
+<div class="bar" id="bar" hidden><div class="in"><div class="t">合計（税込）<strong id="barTotal">0円</strong><span id="barSub"></span></div><button class="go" id="barGo" type="button">内容を確認する</button></div></div>
+
+<script>
+(function () {
+  var API = "https://script.google.com/macros/s/AKfycbzVxSEMjJ_gxR8k7lA9lPN_RKSUw_J6s_wp9kwA4wr9DRJ9LfcMSzFbe4eQUE-wY_SprQ/exec";
+  var app = document.getElementById("app"), bar = document.getElementById("bar");
+  var C = null, view = "form";
+  var S = { date: "", seat: "", people: 2, sake: 0, nonalc: 0, name: "", phone: "", email: "", note: "" };
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function yen(n) { return Number(n || 0).toLocaleString("ja-JP") + "円"; }
+  function day() { for (var i = 0; i < C.dates.length; i++) if (C.dates[i].date === S.date) return C.dates[i]; return null; }
+  function privateOk() { return C.roomFee !== null && C.roomFee !== undefined; }
+  function range() { return S.seat === "private" ? [C.privateMin, C.privateMax] : [1, C.counterMax]; }
+  function roomFee() { return S.seat === "private" && privateOk() ? C.roomFee : 0; }
+  function total() { return C.coursePrice * S.people + C.pairingPrice * (S.sake + S.nonalc) + roomFee(); }
+  function seatJa(s) { return s === "private" ? "個室" : s === "counter" ? "カウンター" : ""; }
+  function clamp() {
+    var r = range();
+    if (S.people < r[0]) S.people = r[0];
+    if (S.people > r[1]) S.people = r[1];
+    if (S.sake + S.nonalc > S.people) { S.nonalc = Math.max(0, S.people - S.sake); if (S.sake > S.people) { S.sake = S.people; S.nonalc = 0; } }
+  }
+  function keep() { ["name", "phone", "email", "note"].forEach(function (k) { var e = $(k); if (e) S[k] = e.value.trim(); }); }
+
+  function load() {
+    fetch(API + "?api=xmas", { credentials: "omit", redirect: "follow" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (!j || !j.ok) throw new Error("ng"); C = j; $("feeRow").textContent = privateOk() ? "別途 個室料 " + yen(C.roomFee) + "（1室）" : "別途 個室料（店舗へお問い合わせください）"; render(); })
+      .catch(function () { app.innerHTML = '<p class="boot">読み込めませんでした。<br><button class="go" type="button" onclick="location.reload()">もう一度読み込む</button><br><span class="muted">お電話（0258-80-1713）でもご予約いただけます。</span></p>'; });
+  }
+
+  function render() {
+    if (!C.accepting) { app.innerHTML = '<div class="card" style="margin-top:24px">ただいまWebでのご予約受付を停止しています。お電話（' + esc(C.tel) + '）でお問い合わせください。</div>'; bar.hidden = true; return; }
+    if (view === "confirm") return renderConfirm();
+    var d = day(), h = "";
+    h += '<h2><span class="n">1</span>希望日を選ぶ</h2><div class="chips">';
+    C.dates.forEach(function (x) {
+      var p = x.label.match(/(\d+)月(\d+)日（(.)）/);
+      h += '<button type="button" class="chip" data-date="' + x.date + '" aria-pressed="' + (S.date === x.date) + '"><b>12/' + p[2] + '（' + p[3] + '）</b><small>19:00開始' + (x.seats.indexOf("private") < 0 ? '・カウンターのみ' : '') + '</small></button>';
+    });
+    h += '</div><p class="note">全日 <strong>19:00 一斉スタート</strong>です（開始時間は選べません）。</p>';
+
+    h += '<h2><span class="n">2</span>席種を選ぶ</h2>';
+    if (!d) h += '<p class="note">先に希望日を選んでください。</p>';
+    else {
+      h += '<div class="chips"><button type="button" class="chip" data-seat="counter" aria-pressed="' + (S.seat === "counter") + '"><b>カウンター</b><small>1〜' + C.counterMax + '名様</small></button>';
+      if (d.seats.indexOf("private") >= 0) {
+        h += '<button type="button" class="chip" data-seat="private" aria-pressed="' + (S.seat === "private") + '"' + (privateOk() ? '' : ' disabled') + '><b>個室</b><small>' + (privateOk() ? C.privateMin + '〜' + C.privateMax + '名様・個室料 ' + yen(C.roomFee) : '受付準備中') + '</small></button>';
+      }
+      h += '</div>';
+      if (d.seats.indexOf("private") < 0) h += '<p class="note">12月25日はカウンターのみのご案内です。</p>';
+      else if (!privateOk()) h += '<p class="warn">個室は店舗へお問い合わせください（' + esc(C.tel) + '）。</p>';
+    }
+
+    if (d && S.seat) {
+      var r = range();
+      h += '<h2><span class="n">3</span>人数とペアリング</h2><div class="card">';
+      h += step("people", "予約人数", r[0] + "〜" + r[1] + "名様", S.people, S.people <= r[0], S.people >= r[1]);
+      h += step("sake", "日本酒ペアリング", "お一人様 8,000円（任意）", S.sake, S.sake <= 0, S.sake + S.nonalc >= S.people);
+      h += step("nonalc", "ノンアルコールペアリング", "お一人様 8,000円（任意）", S.nonalc, S.nonalc <= 0, S.sake + S.nonalc >= S.people);
+      h += '</div><p class="note">同じグループで、日本酒とノンアルコールを組み合わせられます（合計はご予約人数まで）。</p>';
+
+      h += '<h2><span class="n">4</span>代表者さまのご連絡先</h2>';
+      h += '<label for="name">代表者名<span class="req">必須</span></label><input id="name" autocomplete="name" value="' + esc(S.name) + '">';
+      h += '<label for="phone">電話番号<span class="req">必須</span></label><input id="phone" type="tel" inputmode="tel" autocomplete="tel" value="' + esc(S.phone) + '">';
+      h += '<label for="email">メールアドレス<span class="req">必須</span></label><input id="email" type="email" inputmode="email" autocomplete="email" value="' + esc(S.email) + '">';
+      h += '<label for="note">食物アレルギー・備考</label><textarea id="note" rows="3" placeholder="例：1名 甲殻類アレルギー／記念日のお祝い など">' + esc(S.note) + '</textarea>';
+      h += '<input class="hp" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">';
+      h += '<p class="msg" id="msg" role="alert"></p>';
+    }
+    app.innerHTML = h;
+    bind();
+    updateBar();
+  }
+
+  function step(key, label, sub, val, minOff, maxOff) {
+    return '<div class="step"><div class="lb">' + label + '<small>' + sub + '</small></div><div class="qty"><button type="button" data-dec="' + key + '" aria-label="' + label + 'を減らす"' + (minOff ? ' disabled' : '') + '>−</button><output>' + val + (key === "people" ? "名" : "") + '</output><button type="button" data-inc="' + key + '" aria-label="' + label + 'を増やす"' + (maxOff ? ' disabled' : '') + '>＋</button></div></div>';
+  }
+
+  function bind() {
+    app.querySelectorAll("[data-date]").forEach(function (b) { b.onclick = function () {
+      keep(); S.date = b.dataset.date;
+      var d = day();
+      if (S.seat === "private" && d.seats.indexOf("private") < 0) S.seat = ""; // 25日は個室の指定を解除
+      clamp(); render();
+    }; });
+    app.querySelectorAll("[data-seat]").forEach(function (b) { b.onclick = function () { keep(); S.seat = b.dataset.seat; clamp(); render(); }; });
+    app.querySelectorAll("[data-inc],[data-dec]").forEach(function (b) { b.onclick = function () {
+      keep(); var k = b.dataset.inc || b.dataset.dec; S[k] += b.dataset.inc ? 1 : -1; if (S[k] < 0) S[k] = 0;
+      if (k !== "people" && S.sake + S.nonalc > S.people) S[k] -= 1;
+      clamp(); render();
+    }; });
+  }
+
+  function updateBar() {
+    var ready = !!(day() && S.seat);
+    bar.hidden = !ready;
+    if (!ready) return;
+    $("barTotal").textContent = yen(total());
+    $("barSub").textContent = S.people + "名・" + seatJa(S.seat) + (S.sake + S.nonalc ? "・ペアリング" + (S.sake + S.nonalc) + "名" : "");
+    var g = $("barGo");
+    if (view === "confirm") { g.textContent = "予約リクエストを送信"; g.onclick = send; }
+    else { g.textContent = "内容を確認する"; g.disabled = false; g.onclick = toConfirm; }
+  }
+
+  function toConfirm() {
+    keep();
+    var m = $("msg");
+    if (!S.name) return say("代表者名を入れてください。", "name");
+    if (!/^[0-9０-９+\-ー（）() ]{9,20}$/.test(S.phone)) return say("電話番号を入れてください。", "phone");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.email)) return say("メールアドレスを正しく入れてください。", "email");
+    view = "confirm"; render(); window.scrollTo(0, $("app").offsetTop - 10);
+    function say(t, id) { m.textContent = t; var e = $(id); if (e) e.focus(); }
+  }
+
+  function lines() {
+    var a = [["クリスマスディナー", "15,000円 × " + S.people + "名", C.coursePrice * S.people]];
+    if (S.sake) a.push(["日本酒ペアリング", "8,000円 × " + S.sake + "名", C.pairingPrice * S.sake]);
+    if (S.nonalc) a.push(["ノンアルコールペアリング", "8,000円 × " + S.nonalc + "名", C.pairingPrice * S.nonalc]);
+    if (roomFee()) a.push(["個室料", "1室", roomFee()]);
+    return a;
+  }
+
+  function renderConfirm() {
+    var d = day(), pair = [S.sake ? "日本酒 " + S.sake + "名" : "", S.nonalc ? "ノンアルコール " + S.nonalc + "名" : ""].filter(String).join("・") || "なし";
+    var h = '<h2><span class="n">✓</span>ご予約内容の確認</h2><div class="card conf"><dl>' +
+      '<dt>日付</dt><dd>2026年' + esc(d.label) + '</dd><dt>開始時間</dt><dd>19:00（一斉スタート）</dd><dt>席種</dt><dd>' + seatJa(S.seat) + '</dd><dt>人数</dt><dd>' + S.people + '名</dd>' +
+      '<dt>ペアリング</dt><dd>' + pair + '</dd><dt>代表者</dt><dd>' + esc(S.name) + ' 様</dd><dt>電話</dt><dd>' + esc(S.phone) + '</dd><dt>メール</dt><dd style="word-break:break-all">' + esc(S.email) + '</dd>' +
+      (S.note ? '<dt>アレルギー・備考</dt><dd style="font-weight:400">' + esc(S.note) + '</dd>' : '') + '</dl></div>';
+    h += '<h2>料金の内訳</h2><div class="card"><table class="price">';
+    lines().forEach(function (l) { h += '<tr><td>' + l[0] + '<br><span class="muted">' + l[1] + '</span></td><td>' + yen(l[2]) + '</td></tr>'; });
+    h += '</table><div class="total"><span>合計（税込）</span><span>' + yen(total()) + '</span></div></div>';
+    h += '<p class="note">このフォームは<strong>予約リクエスト</strong>です。送信後、店舗からの返信をもってご予約確定となります。</p>';
+    h += '<p class="msg" id="msg" role="alert"></p><p><button class="ghost" type="button" id="back">← 入力に戻る</button></p>';
+    app.innerHTML = h;
+    $("back").onclick = function () { view = "form"; render(); };
+    updateBar();
+  }
+
+  function send() {
+    var btn = $("barGo"), msg = $("msg");
+    btn.disabled = true; msg.style.color = "var(--soft)"; msg.textContent = "送信しています…";
+    var arg = { date: S.date, seat: S.seat, people: S.people, sake: S.sake, nonalc: S.nonalc, name: S.name, phone: S.phone, email: S.email, note: S.note, hp: "" };
+    fetch(API, { method: "POST", credentials: "omit", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: "xmasSubmit", arg: arg }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var r = j && j.result;
+        if (!j || !j.ok || !r) throw new Error("ng");
+        if (!r.ok) { btn.disabled = false; msg.style.color = ""; msg.textContent = r.msg || "送信できませんでした。"; return; }
+        bar.hidden = true;
+        app.innerHTML = '<div class="card done" style="margin-top:24px"><p class="muted">受付番号 ' + esc(r.id) + '</p><p class="big">予約リクエストを受け付けました</p>' +
+          '<p><strong>店舗からの返信をもってご予約確定となります。</strong></p>' +
+          '<p>' + esc(r.when) + '（一斉スタート）<br>' + esc(r.seat) + '・' + r.people + '名<br>合計 ' + yen(r.total) + '（税込）</p>' +
+          '<p class="muted">受付内容を ' + esc(S.email) + ' にお送りしました。数日たっても店舗から連絡がない場合は、お電話（' + esc(C.tel) + '）でお問い合わせください。</p></div>';
+        window.scrollTo(0, $("app").offsetTop - 10);
+      })
+      .catch(function () { btn.disabled = false; msg.style.color = ""; msg.textContent = "送信できませんでした。通信状況を確かめて、もう一度お試しください。"; });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
